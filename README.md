@@ -1,3 +1,3 @@
 # CH-LEONG
 
-Website For CH Leong Enterprise Using PHP, HTML, CSS, JAVASCRIPT, JQEURY
+Website For CH Leong Enterprise Using PHP, HTML, CSS, JAVASCRIPT, JQUERY
