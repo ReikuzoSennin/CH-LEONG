@@ -1,0 +1,89 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: poppins-semibold,poppins,sans-serif;
+}
+
+#login {
+    width: 93%;
+    height: 87vh;
+    margin: 43px auto;
+}
+
+h1,
+p,
+a {
+    color: #2A7C6F;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+p {
+    font-size: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#exit {
+    text-align: right;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#form {
+    margin: 0 auto;
+    width: 320px;
+}
+
+#title {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 70px;
+}
+
+#btn {
+    width: 100%;
+    padding: 15px;
+    color: #7cd3c7;
+    background-color: #2A7C6F;
+    outline: none;
+    border: none;
+    font-size: 18px;
+}
+
+#btn:hover {
+    color: #fff;
+}
+
+#email,
+#password {
+    outline: none;
+    border: none;
+    font-size: 20px;
+    line-height: 30px;
+    width: 100%;
+    color: #2A7C6F;
+    border-bottom: 1px solid #7cd3c7;
+}
+
+#email:focus,
+#email:hover,
+#password:focus,
+#password:hover {
+    border-bottom: 1px solid #2A7C6F;
+}
+
+label {
+    color: #7cd3c7;
+}
+
+#error {
+    padding: 5px 0px;
+    color: red;
+}

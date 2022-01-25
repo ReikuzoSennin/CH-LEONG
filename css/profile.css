@@ -1,0 +1,90 @@
+.profile {
+    width: 100%;
+    padding: 50px 230px;
+    display: flex;
+}
+
+#profile-logo {
+    flex: 1.3;
+    height: 180px;
+    position: relative;
+}
+
+#profile-logo p {
+    text-align: center;
+    color: #2c8c7f;
+}
+
+#profile-container {
+    border: 2px solid #dde8e5;
+    position: absolute;
+    width: 100%;
+    top: -60px;
+    padding-top: 60px;
+    z-index: -1;
+}
+
+#profile-pic {
+    margin: 0 auto;
+    border-radius: 50px;
+    height: 90px;
+    width: 90px;
+    background-color: #cccacb;
+    position: relative;
+    overflow: hidden;
+}
+
+#profile-pic i {
+    color: #fff;
+    font-size: 70px;
+    position: absolute;
+    bottom: .5%;
+    left: 15%;
+}
+
+#profile-details {
+    flex: 3;
+    margin-top: 60px;
+    margin-left: 60px;
+}
+
+#profile-details h1 {
+    text-align: left;
+    font-weight: lighter;
+    color: #2c8c7f;
+}
+
+#profile-details p {
+    color: #2c8c7f;
+}
+
+hr.solid {
+    border: 1px solid #dde8e5;
+}
+
+#profile-details input {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #2c8c7f;
+    color: #2c8c7f;
+    outline: none;
+}
+
+#profile-details input::placeholder {
+    color: #2c8c7f;
+}
+
+#profile-details input:focus,
+#profile-details input:hover {
+    border: 1px solid #1c524b;
+}
+ 
+#pass-change {
+    background-color: #7cd2c6;
+    color: #fff;
+    border: none;
+}
+
+#pass-change:hover {
+    background-color: #1c524b;
+}

@@ -1,0 +1,272 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: poppins-semibold,poppins,sans-serif;
+}
+
+#logo {
+    height: 65px;
+    width: 67px;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+    margin: 0 auto;
+}
+
+header {
+    position: fixed;
+    background-color: #fff;
+    height: 115px;
+    width: 100%;
+    padding: 15px 200px 45px 200px;
+    justify-content: center;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    z-index: 99;
+}
+
+header #nav {
+    display: flex;  
+    list-style: none;
+    text-align: center;
+    height: 50px;
+    margin: 0 auto;
+}
+
+header #nav > li {
+    margin-left: 20px;
+    align-self: flex-end;
+}
+
+.page * {
+    color: #2d8c7e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#cart *,
+#login > *{
+    color: #fdbd1b;
+    text-decoration: none;
+}
+
+#login:hover span,
+#login:hover .fa-chevron-down {
+    color: #d3f2ed;
+}
+
+.fas {
+    font-size: 25px;
+}
+
+section {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+span {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.dropbtn {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 100%;
+    overflow: auto;
+    z-index: 1;
+}
+  
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+  
+.show {display: block;}
+
+#username {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width:100px;
+    display:inline-block;
+}
+
+#search {
+    position: absolute;
+    top:59%;
+    width: 978px;
+    height: 44px;
+    border-radius: 50px;
+}
+
+#search i {
+    position: absolute;
+    font-size: 1.1em;
+    top: 39px;
+    left: 15px;
+    z-index: 10;
+    color:#fdbd1b;
+}
+
+#search input {
+    border: 1px solid #9ce1d7;
+    text-indent: 40px;
+    outline: none;
+    color:#fdbd1b;
+    background-color: #2c8c7f;
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 22px;
+}
+
+#search input::placeholder {
+    color: #fff;
+}
+
+#search input:hover {
+    background-color: #9ce1d7;
+    border: 1px solid #56a5cf;
+}
+
+#search input::-webkit-search-cancel-button{
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    width: 10px;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB3aWR0aD0iMTIzLjA1cHgiIGhlaWdodD0iMTIzLjA1cHgiIHZpZXdCb3g9IjAgMCAxMjMuMDUgMTIzLjA1IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMjMuMDUgMTIzLjA1OyIKCSB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBmaWxsPSIjZmRiZDFiIiBkPSJNMTIxLjMyNSwxMC45MjVsLTguNS04LjM5OWMtMi4zLTIuMy02LjEtMi4zLTguNSwwbC00Mi40LDQyLjM5OUwxOC43MjYsMS43MjZjLTIuMzAxLTIuMzAxLTYuMTAxLTIuMzAxLTguNSwwbC04LjUsOC41CgkJYy0yLjMwMSwyLjMtMi4zMDEsNi4xLDAsOC41bDQzLjEsNDMuMWwtNDIuMyw0Mi41Yy0yLjMsMi4zLTIuMyw2LjEsMCw4LjVsOC41LDguNWMyLjMsMi4zLDYuMSwyLjMsOC41LDBsNDIuMzk5LTQyLjRsNDIuNCw0Mi40CgkJYzIuMywyLjMsNi4xLDIuMyw4LjUsMGw4LjUtOC41YzIuMy0yLjMsMi4zLTYuMSwwLTguNWwtNDIuNS00Mi40bDQyLjQtNDIuMzk5QzEyMy42MjUsMTcuMTI1LDEyMy42MjUsMTMuMzI1LDEyMS4zMjUsMTAuOTI1eiIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=);
+    background-size: 10px 10px;
+}
+
+#space {
+    padding: 50px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+footer {
+    background-color: #1c524b;
+    padding: 30px 0px;
+    color: #fff;
+}
+
+#copyright {
+    width: 100%;
+    text-align: center;
+}
+
+.fab {
+    padding: 10px;
+    font-size: 30px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.fab:hover {
+    opacity: 0.7;
+}
+
+.fa-instagram {
+    background: #f40083;
+  color: white;
+}
+
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.fa-twitter {
+    background: #55ACEE;
+    color: white;
+}
+
+.fa-blogger {
+    background: #ff6600;
+    color: white;
+}
+
+#footer-contact {
+    margin-left: 10px;
+    width: 450px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.turqoise {
+    color: #96dbd1;
+}
+
+#download {
+    background-image: url(../media/download.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+    height: 455px;
+}
+
+#download div {
+    width: 50%;
+    height: 100%;
+    float: right;
+    background-color: rgba(255,255,255,0.75);
+    padding: 80px 150px 70px 80px;
+    text-align: left;
+}
+
+#download div h1 {
+    text-align: left;
+    font-size: 2.6em;
+    color: #1c524b;
+    line-height: .9em;
+    letter-spacing: 2px;
+}
+
+#download div p {
+    line-height: 2em;
+    color: rgba(0,0,0,0.7);
+    font-style: italic;
+}
+
+#download div a {
+    padding: 20px 40px;
+    background-color: #cdf0ea;
+    color: #1e6050;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: .8em;
+    letter-spacing: 1px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#error {
+    color: red !important;
+}
+
+.active {
+    color: #fdbd1b;
+}

@@ -1,0 +1,75 @@
+#feedback {
+    padding-top: 100px;
+    padding-bottom: 70px;
+    display: flex;
+    height: 550px;
+    background-color: #2c8c7f;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+#img-container {
+    flex: .31;
+    overflow: hidden;
+    background-image: url(../media/organicvegetables.png);
+    background-attachment: fixed;
+    background-position: -273px 45px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#white {
+    background-color: #fff;
+    flex: .01;
+}
+
+#text-container {
+    flex: .69;
+    background-color: #e6dfcb;
+}
+
+#text-container h1 {
+    margin-top: 50px;
+    color: #fdb500;
+    font-size: 80px;
+}
+
+.rate {
+    height: 46px;
+    padding: 0 190px;
+}
+.rate:not(:checked) input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:100px;
+    color:#ccc;
+}
+.rate:not(:checked) label:before {
+    content: '★ ';
+}
+.rate input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) label:hover,
+.rate:not(:checked) label:hover ~ label {
+    color: #deb217;  
+}
+.rate input:checked + label:hover,
+.rate input:checked + label:hover ~ label,
+.rate input:checked ~ label:hover,
+.rate input:checked ~ label:hover ~ label,
+.rate label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}

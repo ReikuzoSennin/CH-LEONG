@@ -1,0 +1,114 @@
+#whoweare {
+    padding-top: 100px;
+    padding-bottom: 70px;
+    display: flex;
+    height: 764px;
+    background-color: #2c8c7f;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+#img-container {
+    flex: .47;
+    overflow: hidden;
+    background-image: url(../media/organicvegetables.png);
+    background-attachment: fixed;
+    background-position: -273px 45px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#text-container {
+    flex: 1;
+    margin-left: 15px;
+    background-color: #fff;
+    padding-top: 25px;
+    color: #2a7d6e;
+}
+
+#text-container h1 {
+    font-size: 4.3em;
+}
+
+#text-container p {
+    font-size: 1.1em;
+    padding: 0px 135px;
+    text-align: center;
+    line-height: 32px;
+    letter-spacing: 1px;
+}
+
+.carousel-title {
+    width: 100%;
+    background-color: #2c8c7f;
+    padding-bottom: 30px;
+}
+
+.carousel-title h1 {
+    color: #fdb500;
+    font-size: 55px;
+    padding: 0px 20px 70px 20px;
+}
+
+#carousel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.product {
+    width: 187px;
+}
+
+#prod-img-container {
+    height: 187px;
+    width: 187px;
+    position: relative;
+}
+
+#prod-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#prod-text-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 120px;
+    cursor: pointer;
+}
+
+#prod-text-container p {
+    margin: 8px 0px;
+    color: #fff;
+}
+
+#prod-text-container b {
+    color: #fdb500;
+}
+
+.addtocart {
+    width: 100%;
+    background-color: #54c5b3;
+    color: #fff;
+    outline: none;
+    border: none;
+    padding: 13px;
+    border-radius: 20px;
+}
+
+.addtocart:hover {
+    background-color: #48b5a5;
+}

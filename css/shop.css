@@ -1,0 +1,264 @@
+#shop {
+    padding: 60px 15px 20px 15px;
+}
+
+#shop > h1 {
+    font-size: 60px;
+    margin-bottom: 50px;
+    color: #2A7C6F;
+}
+
+.align-right {
+    width: 100%;
+    display: inline-block;
+    text-align: right;
+}
+
+#filters > h1,
+#filters > h2 {
+    color: #2A7C6F;
+    font-weight: lighter;
+    text-align: left;
+}
+
+hr.solid {
+    margin: 20px 0;
+    border: 1px solid #dde8e5;
+}
+
+hr.name-price {
+    margin: 0 auto;
+    border: 1px solid #2A7C6F;
+    width: 87px;
+}
+
+#product-list {
+    flex: 4;
+    padding: 0px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.product {
+    width: 344px;
+    height: 470px;
+    position: relative;
+}
+
+#img-container {
+    width: 344px;
+    height: 215px;
+    cursor: pointer;
+}
+
+#img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#text-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 90px;
+    cursor: pointer;
+}
+
+#text-container p {
+    margin: 8px 0px;
+    color: #2A7C6F;
+}
+
+#text-min,
+#text-max {
+    border: none;
+    color: #2A7C6F;
+    font-size: 18px;
+}
+
+#slider-range .ui-slider-handle {
+    outline: 0;
+    background: #2A7C6F;
+    border-radius: 50%;
+    top: -.55em;
+}
+  
+#slider-range.ui-slider-horizontal {
+    top: 1em;
+    left: 5%;
+    height: .2em;
+    width: 80%;
+    border: none;
+    background: #cddedb;
+}
+
+#slider-range .ui-slider-range {
+    background: #2A7C6F;
+}
+
+.price-list {
+    padding: 0px;
+    margin: 0px;
+    width: 170px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0 auto;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.subs,
+.adds,
+.quantity,
+.variant-select,
+#sortby {
+    padding: 5px 10px;
+    border: 1px solid #2A7C6F;
+    color: #2A7C6F;
+    background-color: #FFFEFC;
+    text-align: center;
+    outline: none;
+}
+
+.subs {
+    border-right: none;
+    font-size: 1.5em;
+}
+
+.adds {
+    border-left: none;
+    font-size: 1.5em;
+}
+
+.quantity {
+    border-left: none;
+    border-right: none;
+    font-size: 1.2em;
+    flex: 1 1 auto;
+}
+
+#quantity-wrapper {
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.addtocart {
+    width:100%;
+    color: #fff;
+    background-color: #2A7C6F;
+    font-size: 20px;
+    border: none;
+    padding: 10px 0px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.addtocart:hover {
+    opacity: 0.7;
+    transition: 0.2s ease;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 54%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    height: 0;
+    width: 100%;
+    transition: .2s ease;
+    background-color: rgba(255,255,255,0.7);
+}
+  
+.product:hover .overlay {
+    height: 10%;
+}
+
+.text {
+    color: #2A7C6F;
+    font-size: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.variant-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: .9em;
+    cursor: pointer;
+}
+
+#filter-category input[type=radio] {
+    display: none;
+}
+
+#filter-category label {
+    color: #2A7C6F;
+    cursor: pointer;
+    line-height: 1.5em;
+}
+#filter-category label:hover {
+    opacity: 0.7;
+}
+#filter-category input[type=radio]:checked+label {
+    color: rgb(252, 180, 0);
+    font-weight: bold;
+}
+
+#sortby {
+    padding: 10px 5px;
+    text-align: left;
+    font-weight: bold;
+    transition: .2s;
+    border: 1px solid rgba(42, 124, 111, 0.6);
+}
+
+#sortby:hover {
+    border: 1px solid #2A7C6F;
+    transition: .2s;
+}
+
+a {
+    text-decoration: none;
+}
+
+#pagination {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+}
+
+#pagination a,
+#pagination p {
+    color:#2A7C6F;
+    padding: 0px 5px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#pagination #current {
+    color: #fdbd1b;
+}

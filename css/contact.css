@@ -1,0 +1,103 @@
+#about {
+    position: absolute;
+    top: 50%;
+    left: 14%;
+    width: 980px;
+}
+
+#about h1 {
+    color: #fff;
+    font-size: 80px;
+}
+
+#about svg {
+    width: 71px;
+    height: 81px;
+}
+
+.square {
+    background-color: #fff;
+    padding: 50px 50px;
+}
+
+#contact1 {
+    display: flex;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#contact1 h2 {
+    color: #42806e;
+}
+
+#contact1box1 {
+    flex: 1;
+}
+
+#contact1box1 p {
+    color: #43c1b1;
+    font-size: 20px;
+    line-height: 40px;
+}
+
+#contact1box2 {
+    flex: 2;
+    padding: 15px 50px 50px 50px;
+    margin-left: 5px;
+}
+
+#contact1box2 p {
+    color: #43c1b1;
+}
+
+#cover {
+    height: 700px;
+    background-color: #2b7d6f;
+}
+
+#contact2 {
+    padding: 50px 130px;
+}
+
+#contact2 h2 {
+    color: #42806e;
+    font-size: 35px;
+}
+
+#contact2 form {
+    margin: 0 auto;
+}
+
+#contact2 input[type=text],
+#contact2 textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #c0eae4;
+    border-radius: 5px;
+    border: none;
+}
+
+#contact2 input[type=text]::placeholder,
+#contact2 textarea::placeholder {
+    color: #000;
+}
+
+#contact2 table {
+    border-spacing: 20px;
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+#contact2 input[type=submit] {
+    background-color: #e9ab0e;
+    color: #fff;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 20px;
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+#map {
+    height: 455px;
+}

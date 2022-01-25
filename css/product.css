@@ -1,0 +1,75 @@
+.product {
+    display: flex;
+    width: 890px;
+    margin: 50px auto;
+    justify-content: space-between;
+}
+
+.product p,
+#type-label,
+#quantity-label,
+#submit-btn {
+    color: #2A7C6F;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+#type,
+#quantity {
+    margin-bottom: 30px;
+}
+
+#img-container {
+    height: 500px;
+    width: 500px;
+    position: relative;
+    border: 1px solid #dde8e5;
+}
+
+#img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#text-container {
+    padding: 65px 0px;
+    flex: 1;
+    margin-left: 40px;
+}
+
+#submit-btn {
+    padding: 10px 0px;
+    background: transparent;
+    border: 1px solid #2A7C6F;
+    border-radius: 30px;
+    width: 100%;
+    cursor: pointer;
+}
+
+#submit-btn:hover {
+    color: rgba(42, 124, 111, 0.6);
+}
+
+#type {
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+}
+
+#quantity {
+    padding: 10px;
+    width: 30%;
+    outline: none;
+}
+
+#quantity::-webkit-inner-spin-button {  
+    width: 30px;
+    height: 40px;
+}
