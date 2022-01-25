@@ -1,0 +1,190 @@
+#cart-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 10px;
+}
+
+hr.solid {
+    margin-top: 20px;
+    border: 1px solid rgba(42, 124, 111, 0.2);
+}
+
+#product-list p,
+#product-list h1,
+#summary h1,
+#summary p,
+#empty-container h1 {
+    color: #2A7C6F;
+    text-align: left;
+}
+
+.img-container {
+    height: 100px;
+    width: 100px;
+    position: relative;
+    border: 1px solid rgba(42, 124, 111, 0.2);
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+#checkout {
+    width:100%;
+    color: #fff;
+    background-color: #2A7C6F;
+    font-size: 20px;
+    border: none;
+    padding: 10px 0px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+tr {
+    border-bottom: 1px solid rgba(42, 124, 111, 0.2);
+}
+
+td {
+    padding: 30px 0px;
+
+}
+
+#product-list {
+    flex: 3;
+}
+
+#summary {
+    flex: .8;
+    margin-left: 50px;
+}
+
+.subs,
+.adds,
+.quantity,
+.remove-btn {
+    padding: 5px 3px;
+    border: 1px solid #2A7C6F;
+    color: #2A7C6F;
+    background-color: #FFFEFC;
+    text-align: center;
+    outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0 auto;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.subs {
+    border-right: none;
+    font-size: .9em;
+}
+
+.adds {
+    border-left: none;
+    font-size: .9em;
+}
+
+.quantity {
+    border-left: none;
+    border-right: none;
+    font-size:.9em;
+    flex: 1 1 auto;
+}
+
+#empty-container {
+    width: 100%;
+    height: 50vh;
+}
+
+#empty-container h2,
+#empty-container a {
+    color: #2A7C6F;
+}
+
+#mid {
+    margin: 100px 0;
+    text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 10%;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+  
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 50px;
+    border: 1px solid #888;
+    width: 46%;
+}
+
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.modal-container h1 {
+    color: #2A7C6F;
+    padding: 30px;
+}
+
+.modal-container p {
+    font-size: 15px;
+}
+
+.modal-container i {
+    color: red;
+}
+  
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#gotit {
+    text-decoration: underline;
+    font-size: 15px;
+    padding: 60px;
+}
