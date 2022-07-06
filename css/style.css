@@ -47,6 +47,10 @@ header #nav > li {
     text-decoration: none;
 }
 
+.page:hover * {
+    color: #fdbd1b;
+}
+
 #cart *,
 #login > *{
     color: #fdbd1b;
