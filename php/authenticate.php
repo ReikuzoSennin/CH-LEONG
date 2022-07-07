@@ -149,13 +149,13 @@ if (isset($_POST['add-to-cart'])) {
 			// }
 			$cart = mysqli_fetch_array($results);
 
-			$result = mysqli_query($con, "SELECT * FROM cart_items WHERE productID='$id' AND cartID='".$cart['cartID']."' LIMIT 1");
+			$result = mysqli_query($con, "SELECT * FROM cart_items WHERE variantID='$id' AND cartID='".$cart['cartID']."' LIMIT 1");
 			if (mysqli_num_rows($result) == 1) {
 				$product = mysqli_fetch_array($result);
 				$quantity += $product['quantity'];
-				mysqli_query($con, "UPDATE cart_items SET quantity='$quantity' WHERE productID='$id' AND cartID='".$cart['cartID']."'");
+				mysqli_query($con, "UPDATE cart_items SET quantity='$quantity' WHERE variantID='$id' AND cartID='".$cart['cartID']."'");
 			} else {
-				mysqli_query($con, "INSERT INTO cart_items (cartID, productID, quantity) VALUES('".$cart['cartID']."', '$id', '$quantity')");
+				mysqli_query($con, "INSERT INTO cart_items (cartID, variantID, quantity) VALUES('".$cart['cartID']."', '$id', '$quantity')");
 			}
 		}
 	}
@@ -173,7 +173,7 @@ if (isset($_POST['quantity-change'])) {
 				if(count($errors) == 0) {
 					$results = mysqli_query($con, "SELECT * FROM cart WHERE userID='".$_SESSION['user']['userID']."' LIMIT 1");
 					$cart = mysqli_fetch_array($results);
-					mysqli_query($con, "UPDATE cart_items SET quantity='$quantity' WHERE productID='$id' AND cartID='".$cart['cartID']."'");
+					mysqli_query($con, "UPDATE cart_items SET quantity='$quantity' WHERE variantID='$id' AND cartID='".$cart['cartID']."'");
 				}
 			}
 		}
@@ -182,6 +182,6 @@ if (isset($_POST['quantity-change'])) {
 
 if(isset($_POST['remove-item'])) {
 	$id = mysqli_real_escape_string($con, $_POST['remove-item']);
-	mysqli_query($con, "DELETE FROM cart_items WHERE productID='$id'");
+	mysqli_query($con, "DELETE FROM cart_items WHERE variantID='$id'");
 }
 ?>
