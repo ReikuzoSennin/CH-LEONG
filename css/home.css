@@ -87,7 +87,6 @@
     flex-direction: column;
     text-align: center;
     height: 120px;
-    cursor: pointer;
 }
 
 #prod-text-container p {
@@ -111,4 +110,5 @@
 
 .addtocart:hover {
     background-color: #48b5a5;
+    cursor: pointer;
 }
