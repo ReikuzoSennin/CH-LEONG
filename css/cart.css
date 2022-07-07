@@ -81,6 +81,7 @@ td {
     background-color: #FFFEFC;
     text-align: center;
     outline: none;
+    cursor: pointer;
 }
 
 input::-webkit-outer-spin-button,
