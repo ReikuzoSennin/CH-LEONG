@@ -21,31 +21,45 @@
     <section>
         <div class="product">
         <?php
-        $results = mysqli_query($con, "SELECT * FROM products WHERE productID=".$_GET['id']."");
-        $product = mysqli_fetch_array($results);
+        $sql = "SELECT * FROM variants v
+                JOIN products p
+                ON v.productID = p.productID
+                WHERE v.variantID=".$_GET['id']."";
+        $result = mysqli_query($con, $sql);
+        $product = mysqli_fetch_array($result);
         echo '<div id="img-container">';
-            echo "<img src='".$product['productImage']."'>";
+            echo "<img src='".$product['variantImage']."'>";
         echo '</div>';
         echo '<div id="text-container">';
             echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['productName'])."</p>";
-            echo "<p>RM".$product['productPrice']."</p>";
-            if($product['variantName']<>"") {
+            echo "<p>RM".$product['variantPrice']."</p>";
+            $sql = "SELECT * FROM variants
+                    WHERE productID = ".$product['productID']."";
+            $results = mysqli_query($con, $sql);
+            if(mysqli_num_rows($results) > 1) {
             echo "<form action='' method='GET' onChange=submit()>";
                 echo '<label for="type" id="type-label">Type</label><br><br>';
                 echo "<select name='id' id='type'>";
-                $result = mysqli_query($con, "SELECT * FROM products WHERE productName='".$product['productName']."' AND productID IN (SELECT productID FROM inventory WHERE productInventory='In Stock')");
-                while($variant = mysqli_fetch_array($result)) {
-                    echo "<option value='".$variant['productID']."' ".((isset($_GET['id']) && $_GET['id']==$variant['productID']) ? 'selected' : '').">".$variant['variantName']."</option>";
+                while($products = mysqli_fetch_array($results)) {
+                    echo "<option value='".$products['variantID']."' ".((isset($_GET['id']) && $_GET['id']==$products['variantID']) ? 'selected' : '').">".$products['variantName']."</option>";
                 }
                 echo "</select><br>";
             echo "</form>";
             }
+            $sql = "SELECT * FROM inventory
+            WHERE variantID = ".$product['variantID']."
+            AND productInventory = 'In Stock'";
+            $stock = mysqli_query($con, $sql);
+            if(mysqli_num_rows($stock) > 0) {
             echo "<form action='' method='POST'>";
                 echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
                 echo '<label for="quantity" id="quantity-label">Quantity</label><br><br>';
                 echo '<input type="number" name="quantity" id="quantity" value="1" min="1" max="99"><br>';
                 echo '<input type="submit" id="submit-btn" name="add-to-cart" value="Add to Cart">';
             echo "</form>";
+            } else {
+                echo "<p>OUT OF STOCK</p>";
+            }
         echo '</div>';
         ?>
         </div>

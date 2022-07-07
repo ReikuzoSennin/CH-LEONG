@@ -114,25 +114,26 @@
                 echo "<form action='' id='quantity-change' method='post'>";
                 $totalprice = 0;
                 while ($item = mysqli_fetch_array($results)) {
-                    $result = mysqli_query($con, "SELECT * FROM products WHERE productID='".$item['productID']."' ");
+                    $result = mysqli_query($con, "SELECT * FROM variants WHERE variantID='".$item['variantID']."' ");
                     $product = mysqli_fetch_array($result);
                     echo "<tr>";
                     echo "<td width=15%;><div class='img-container'>";
-                        echo "<img src='".$product['productImage']."'>";
+                        echo "<img src='".$product['variantImage']."'>";
                     echo "</div></td>";
                     echo "<td width=55%;><div class='text-container'>";
-                        echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['productName'])."</p>";
-                        echo "<p>RM".$product['productPrice']."</p>";
+                        // echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['variantName'])."</p>";
+                        echo "<p>".($product['variantName'])."</p>";
+                        echo "<p>RM".$product['variantPrice']."</p>";
                     echo "</div></td>";
                     echo "<td width=18%;><input type='button' class='subs' value='&minus;'>";
-                    echo "<input type='hidden' name='id[]' value='".$product['productID']."'>";
+                    echo "<input type='hidden' name='id[]' value='".$product['variantID']."'>";
                     echo "<input type='number' class='quantity' value='".$item['quantity']."' min='1' max='99' name='quantity[]' onChange='this.form.submit()'>";
                     echo "<input type='button' class='adds' value='&plus;'></td>";
                     echo "<input type='hidden' name='quantity-change'>";
-                    $productprice = $item['quantity']*$product['productPrice'];
+                    $productprice = $item['quantity']*$product['variantPrice'];
                     $totalprice += $productprice;
                     echo "<td width=13%;><p>RM".$productprice.".00</p></td>";
-                    echo "<td width=13%;><button value='".$product['productID']."' name='remove-item' class='remove-btn'>&#10005;</button></td>";
+                    echo "<td width=13%;><button value='".$product['variantID']."' name='remove-item' class='remove-btn'>&#10005;</button></td>";
                     echo "</tr>";
                 }
                 echo "</form>";

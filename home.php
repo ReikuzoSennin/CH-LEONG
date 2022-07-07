@@ -20,21 +20,32 @@
 At first he only sold vegetables in the markets and as the business grew he became a supplier of vegetables to traders around Selangor. Later the company name was changed to Ch Leong Enterprise Sdn. Bhd. In 2014. Ch Leong Company continues to grow and is involved in the importation of fresh fruits and vegetables. With packaging and cold storage facilities, we have the ability to supply fruits and vegetables throughout Malaysia. In 2019 Mr. Leong Chin Hai has passed away and his business has been taken over by his business partner. Although he was gone but his business continued. Now the name CH LEONG has also been registered with the intellectual property corporation (MYiPPO). This is to maintain his name as the founder to CH LEONG.</p>
         </div>
     </section>
+    <?php 
+    $categories = array("FRUIT", "MEAT & POULTRY", "SEAFOOD", "VEGETABLES"); 
+    foreach($categories as $value) {
+    ?>
     <section class="carousel-title">
-        <h1>FRUIT</h1>
+        <h1><?php echo $value ?></h1>
         <?php
             echo "<div id='carousel'>";
-            $results = mysqli_query($con, "SELECT * FROM products WHERE categoryID IN (SELECT categoryID from category WHERE categoryName='FRUIT') GROUP BY productName ORDER BY productID LIMIT 6");
+            $sql = "SELECT * FROM variants v
+                    JOIN products p
+                    ON v.productID = p.productID
+                    JOIN category c
+                    ON p.categoryID = c.categoryID
+                    WHERE c.categoryName = '".$value."'
+                    GROUP BY v.productID ORDER BY v.productID LIMIT 6";
+            $results = mysqli_query($con, $sql);
             while ($product = mysqli_fetch_array($results)) {
                 echo '<div class="product">';
                     echo '<div id="prod-img-container">';
-                        echo "<img src='".$product['productImage']."'>";
+                        echo "<img src='".$product['variantImage']."'>";
                     echo '</div>';
                     echo "<div id='prod-text-container'>";
                                 echo "<p>".$product['productName']."</p>";
-                                echo "<p><b>RM".$product['productPrice']."</b></p>";
+                                echo "<p><b>RM".$product['variantPrice']."</b></p>";
                     echo "</div>";
-                    echo "<form action='product.php?id=".$product['productID']."' method='post'>";
+                    echo "<form action='product.php?id=".$product['variantID']."' method='post'>";
                         echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
                     echo "</form>";
                 echo '</div>';
@@ -42,72 +53,7 @@ At first he only sold vegetables in the markets and as the business grew he beca
             echo "</div>";
         ?>
     </section>
-    <section class="carousel-title">
-        <h1>MEAT & POULTRY</h1>
-        <?php
-            echo "<div id='carousel'>";
-            $results = mysqli_query($con, "SELECT * FROM products WHERE categoryID IN (SELECT categoryID from category WHERE categoryName='MEAT & POULTRY') GROUP BY productName ORDER BY productID LIMIT 6");
-            while ($product = mysqli_fetch_array($results)) {
-                echo '<div class="product">';
-                    echo '<div id="prod-img-container">';
-                        echo "<img src='".$product['productImage']."'>";
-                    echo '</div>';
-                    echo "<div id='prod-text-container'>";
-                                echo "<p>".$product['productName']."</p>";
-                                echo "<p><b>RM".$product['productPrice']."</b></p>";
-                    echo "</div>";
-                    echo "<form action='product.php?id=".$product['productID']."' method='post'>";
-                        echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
-                    echo "</form>";
-                echo '</div>';
-            }
-            echo "</div>";
-        ?>
-    </section>
-    <section class="carousel-title">
-        <h1>SEAFOOD</h1>
-        <?php
-            echo "<div id='carousel'>";
-            $results = mysqli_query($con, "SELECT * FROM products WHERE categoryID IN (SELECT categoryID from category WHERE categoryName='SEAFOOD') GROUP BY productName ORDER BY productID LIMIT 6");
-            while ($product = mysqli_fetch_array($results)) {
-                echo '<div class="product">';
-                    echo '<div id="prod-img-container">';
-                        echo "<img src='".$product['productImage']."'>";
-                    echo '</div>';
-                    echo "<div id='prod-text-container'>";
-                                echo "<p>".$product['productName']."</p>";
-                                echo "<p><b>RM".$product['productPrice']."</b></p>";
-                    echo "</div>";
-                    echo "<form action='product.php?id=".$product['productID']."' method='post'>";
-                        echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
-                    echo "</form>";
-                echo '</div>';
-            }
-            echo "</div>";
-        ?>
-    </section>
-    <section class="carousel-title">
-        <h1>VEGETABLES</h1>
-        <?php
-            echo "<div id='carousel'>";
-            $results = mysqli_query($con, "SELECT * FROM products WHERE categoryID IN (SELECT categoryID from category WHERE categoryName='VEGETABLES') GROUP BY productName ORDER BY productID LIMIT 6");
-            while ($product = mysqli_fetch_array($results)) {
-                echo '<div class="product">';
-                    echo '<div id="prod-img-container">';
-                        echo "<img src='".$product['productImage']."'>";
-                    echo '</div>';
-                    echo "<div id='prod-text-container'>";
-                                echo "<p>".$product['productName']."</p>";
-                                echo "<p><b>RM".$product['productPrice']."</b></p>";
-                    echo "</div>";
-                    echo "<form action='product.php?id=".$product['productID']."' method='post'>";
-                        echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
-                    echo "</form>";
-                echo '</div>';
-            }
-            echo "</div>";
-        ?>
-    </section>
+    <?php } ?>
     <section id="download">
         <div>
             <h1>Wanted To Become Our Customer?</h1><br><br>

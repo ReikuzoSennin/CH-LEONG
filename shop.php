@@ -119,7 +119,14 @@
             </div>
             <div id="product-list">
                 <?php
-                $query = "SELECT * FROM products WHERE productID IN (SELECT productID FROM inventory WHERE productInventory='In Stock')";
+                $query ="SELECT * FROM variants v
+                        JOIN products p
+                        ON v.productID = p.productID
+                        JOIN inventory i
+                        ON v.variantID = i.variantID
+                        JOIN category c
+                        ON p.categoryID = c.categoryID
+                        WHERE i.productInventory='In Stock'";
                 if (isset($_GET['category'])) {
                     switch($_GET['category']) {
                         case 'all':
@@ -129,34 +136,34 @@
                         case 'MEAT & POULTRY':
                         case 'SEAFOOD':
                         case 'FRUIT':
-                            $query = $query." AND categoryID IN (SELECT categoryID from category WHERE categoryName='".$_GET['category']."')";
+                            $query = $query." AND c.categoryName='".$_GET['category']."'";
                             break;
                         default:
-                            $query = $query." AND categoryID IN (SELECT categoryID from category WHERE subCategoryName='".$_GET['category']."')";
+                            $query = $query." AND c.subCategoryName='".$_GET['category']."'";
                     }
                 }
                 if (isset($_GET['min']) && isset($_GET['max'])) {
-                    $query = $query." AND productPrice BETWEEN '".$_GET['min']."' AND '".$_GET['max']."'";
+                    $query = $query." AND v.variantPrice BETWEEN '".$_GET['min']."' AND '".$_GET['max']."'";
                 }
-                $query = $query." GROUP BY productName";
+                $query = $query." GROUP BY v.productID";
                 if (isset($_GET['sortby'])) {
                     switch($_GET['sortby']) {
                         case 'priceasc':
-                            $query = $query." ORDER BY productPrice asc";
+                            $query = $query." ORDER BY v.variantPrice asc";
                             break;
                         case 'pricedesc':
-                            $query = $query." ORDER BY productPrice desc";
+                            $query = $query." ORDER BY v.variantPrice desc";
                             break;
                         case 'nameasc':
-                            $query = $query." ORDER BY productName asc";
+                            $query = $query." ORDER BY p.productName asc";
                             break;
                         case 'namedesc':
-                            $query = $query." ORDER BY productName desc";
+                            $query = $query." ORDER BY p.productName desc";
                             break;
                         default:
-                            $query = $query." ORDER BY productID";
+                            $query = $query." ORDER BY v.productID";
                     }
-                } else { $query = $query." ORDER BY productID"; }
+                } else { $query = $query." ORDER BY v.productID"; }
                 //Calculate Number of Pages
                 $result = mysqli_query($con, $query);
                 $row_count = mysqli_num_rows($result);
@@ -169,9 +176,9 @@
                 if(mysqli_num_rows($results)>0) {
                     while($product = mysqli_fetch_array($results)) {
                         echo "<div class='product'>";
-                            echo "<a href='product.php?id=".$product['productID']."'>";
+                            echo "<a href='product.php?id=".$product['variantID']."'>";
                             echo "<div id='img-container'>";
-                                echo "<img src='".$product['productImage']."'>";
+                                echo "<img src='".$product['variantImage']."'>";
                                 echo '<div class="overlay">';
                                     echo '<div class="text">Quick View</div>';
                                 echo '</div>';
@@ -179,15 +186,24 @@
                             echo "<div id='text-container'>";
                                 echo "<p>".$product['productName']."</p>";
                                 echo "<hr class='name-price'>";
-                                echo "<p><b>RM".$product['productPrice']."</b></p>";
+                                echo "<p><b>RM".$product['variantPrice']."</b></p>";
                             echo "</div>";
                             echo "</a>";
                             echo "<form action='' method='post'>";
-                            if($product['variantName']<>"") {
+                            $sql = "SELECT * FROM inventory
+                            WHERE variantID = ".$product['variantID']."
+                            AND productInventory = 'In Stock'";
+                            $stock = mysqli_query($con, $sql);
+                            if(mysqli_num_rows($stock) > 0) {
                                 echo "<select name='id' class='variant-select'>";
-                                $result = mysqli_query($con, "SELECT * FROM products WHERE productName='".$product['productName']."' AND productID IN (SELECT productID FROM inventory WHERE productInventory='In Stock')");
+                                $sql = "SELECT * FROM variants v
+                                        JOIN inventory i
+                                        ON v.variantID = i.variantID
+                                        WHERE productID='".$product['productID']."' 
+                                        AND i.productInventory='In Stock'";
+                                $result = mysqli_query($con, $sql);
                                 while($variant = mysqli_fetch_array($result)) {
-                                    echo "<option value='".$variant['productID']."'>".$variant['variantName']."</option>";
+                                    echo "<option value='".$variant['variantID']."'>".$variant['variantName']."</option>";
                                 }
                                 echo "</select>";
                             } else { 
