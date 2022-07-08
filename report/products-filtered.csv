@@ -1,0 +1,246 @@
+﻿productID,productName,categoryID
+1,Fuji Apple(CHN),24
+2,Fuji Apple SA,24
+3,Royal Gala Apple(SA)/135p,24
+4,Honey Mandarin(CHN)/84,24
+5,Valencia Orange (EGY),24
+6,Century Pear(CHN)/42p,24
+7,Fragrant Pear(CHN)/7kg/XL,24
+8,Ya Pear(CHN),24
+9,Gong Pear(CHN)/36p,24
+10,Sonaka Grape(IND)/500g*10p,24
+11,Lychee(CHN),24
+12,Cherry(USA)/5kg,24
+13,Hami Melon CHINA/9kg,24
+14,Lemon,24
+15,BANGLADESH/Potato/500g*10p,3
+16,Big Shallot(IND)/500g*10p,3
+17,Dried Chilli(IND)/100g*10p,2
+18,Sweet Corn(25packet*2pcs),2
+19,Sweet Tamarind(1kg*10p),2
+20,Dried Seaweed(50g*30p),1
+21,GroundNut(5kg),4
+22,Salt Plum,24
+23,Sichuan Whole,7
+24,Garlic Pulp,3
+25,Lotus Seed(100g*50p),4
+26,Ginkgo Nut(80g*100p),4
+27,Bamboo Shoot (10kg),1
+28,Fresh Black Fungus(200g*25p),1
+29,Wax Gourd(1kg),2
+30,Arrow Root (10kg),3
+31,Yacon(7kg),3
+32,Baby Qing Bak(4kg),1
+33,Baby Dou Bak (4kg),1
+34,Burdock Root (10kg),3
+35,Huai Shan(10kg),3
+36,Mixed Mushroom(400g*20p),5
+37,Snow White Mushroom(150g*40p),5
+38,Sweet Pea(130g*30p),4
+39,Garlic Sprout (10kg),6
+40,Lettuce Shoot(10kg),6
+41,Spinach(200g*20p),6
+42,Mak Choy (300g*13p),6
+43,Kale/Baby Kale/Stem Kale,6
+44,CHN Wong Bok/Baby Wong Bok,6
+45,Purple Cabbage(10kg),6
+46,CHINA Cabbage(20kg),6
+47,VIET Carrot,2
+48,VIET Sweet Potato (Yellow/Purple) /10kg,3
+49,VIET Sweet Potato (Yellow/Purple) /5kg,3
+50,JAPAN Huai Shan (10kg),3
+51,USA Baby Carrot(250kg*40p),3
+52,CHN Baby Pumpkin (2kg),2
+53,AUS Purple Carrot(9kg/500g*15p),3
+54,AUS Potato Nadine/Ruby Lou/Royal Blue/Chat Baby (15kg),3
+55,Turkey Whole Raw,8
+56,Turkey Breast,8
+57,Sliced Turkey Toast,8
+58,Turkey Bacon,8
+59,Duck Breast Raw Meat,9
+60,Smoked Duck,9
+61,Whole Duck,9
+62,Quail,10
+63,Ostrich Steak/Meat,11
+64,Venicon Meat,12
+65,Minced Chicken (2kg),13
+66,Fresh Chicken Skin (800g-1kg) [Halal],13
+67,Fresh Chicken Gizzard (800g-1kg) [Halal],13
+68,Old Hen (1 bird) [Halal],13
+69,Fresh Chicken Neck (800g-1kg) [Halal],13
+70,Fresh Chicken Feet (800g-1kg) [Halal],13
+71,Fresh Chicken Liver (800g-1kg) [Halal],13
+72,Fresh Chicken Quarter (800g-1kg) [Halal],13
+73,Fresh Chicken Drumstick (800g-1kg) [Halal],13
+74,Fresh Chicken Wing (800g-1kg) [Halal],13
+75,Fresh Chicken Thigh (800g-1kg) [Halal],13
+76,Fresh Chicken Chop +/-2kg [Halal],13
+77,Fresh Kampung Chicken (1.5-1.8kg) [Halal],13
+78,Fresh Chicken Fillet (800g-1kg) [Halal],13
+79,Fresh Chicken Whole Leg (800g-1kg) [Halal],13
+80,Whole Chicken – No Head and Feet (1.5-1.7kg) [Halal],13
+81,Fresh Chicken Carcass (800g-1kg) [Halal],13
+82,Fresh Chicken Breastmeat (800g-1kg) [Halal],13
+83,Australian Lamb Leg Boneless,14
+84,Fresh Lamb Shanks,14
+85,Lamb Chops,14
+86,Lamb Rack Frenched,14
+87,Frozen Leg Australian,14
+88,Mutton Cube,14
+89,Lamb Leg Boneless,14
+90,Mutton Truck 28kg,14
+91,Lamb/Mutton Carcass,14
+92,Lamb Shoulder,14
+93,Shortibs NZ Cut,15
+94,Beef lungs,15
+95,Mince Beef,15
+96,Ox Tail Cut,15
+97,Shank Indian 20kg,15
+98,Cooked Tripe 5kg,15
+99,Beef Topside (800g-1kg) [HALAL],15
+100,Beef Striploin/Sirloin (800g-1kg) [HALAL],15
+101,Beef Tenderloin (800g-1kg) [HALAL],15
+102,Beef Knuckle (800g-1kg) [HALAL],15
+103,Beef Silverside (800g-1kg) [HALAL],15
+104,Beef Trimmings (800g-1kg) [HALAL],15
+105,Beef Brisket (800g-1kg) [HALAL],15
+106,Beef Rump (800g-1kg) [HALAL],15
+107,Beef Blade (800g-1kg) [HALAL],15
+108,Beef Neck Bone (800g-1kg) [HALAL],15
+109,NZ Black Mussels / NZ 黑蚝 (1 packet),17
+110,Mussel Meat / 冷冻青口肉 (500g),17
+111,Half Shell Scallop / 半边壳带子 (1kg),17
+112,Cockle Meat / 蛤蜊肉 / Isi Kerang (1kg),17
+113,Frozen Cooked White Clam Whole Shell ( Hamaguri ) 冷凍熟白蛤 (1kg),17
+114,Dried Oyster / 蚝干 (200g),17
+115,Grade A USA Scallop / 美国带子 (500g),17
+116,Pink Half Shell Scallop / 粉壳半壳带子 (500g),17
+117,Sanma Fish,18
+118,Saba Fish,18
+119,Shishamo (1 packet),18
+120,Grab Meat,19
+121,Flower Grab,19
+122,Stone Crab Live,19
+123,Whole Squid,22
+124,Boiled Giant Octopus / Ni Tako / (Halal) 冷凍真蛸 (1pc),22
+125,Soft Shell Crab 软壳蟹 (1kg),19
+126,King Crab / 帝王蟹 (1 pc),19
+127,Squid Ring / 苏东圈 (1kg),22
+128,Wild Chilean sea bass,20
+129,Squid whole clean,22
+130,CuttleFish 1kg,22
+131,Baby cuttlefish,22
+132,Unagi Kabayaki (1 pc),18
+133,Grouper / 石班 / Kerapu – Whole Fish (+/- 1.1kg),18
+134,Butter Fish Fillet,20
+135,Cod Loin,20
+136,Saba Mackerel Fillet / Fillet Tenggiri Saba / 鲭鱼厚片(2 pcs),18
+137,Redfish Slice / 红鱼片 (1 pc),18
+138,Lobster / 龙虾 / Udang Kara (2 pcs) +/- 2kg,21
+139,Red Coral Grouper Fillet +/-700g,18
+140,Flounder Fillet / 无骨鲽鱼 +/-1kg,20
+141,Grouper Fillet / 石斑鱼片 (1kg),20
+142,Mantis Shrimp Meat / 虾姑肉 (300g),21
+143,Big Prawn / 大虾 / Udang Besar,21
+144,Baby Octopus (300g),22
+145,Norwegian Salmon Head 冷冻三文鱼头 (1 pc),20
+146,Dory Fish / 时多利鱼肉片 (900-1kg),20
+147,Tilapia Fish Fillet / 非洲鱼片 (2 pcs) +/-380g,20
+148,Dried Shrimps 200G / 虾米 / Udang Kering (200g),21
+149,Local Ming Prawn 本地明虾 (400-500g),21
+150,Perch fillet / 宝石鲈鱼片 (2 pcs) +/-700,20
+151,Chilean Atlantic Salmon Fillet / 智利三文鱼 (2 or 4 pcs),20
+152,Washed W.Chestnut/Water Chestnut,24
+153,Chestnut(40-60)/10kg,24
+154,Cavendish Banana / Pisang Montel (1kg),24
+155,Berangan Banana (1kg),24
+156,Navel Orange/CHINA/113p,24
+157,Mango (1 pc),24
+158,Avocado (AUS)/9kg,24
+159,China Golden Pear (30p),24
+160,Mix Berries (500g),24
+161,Local Honeydew (1 pc),24
+162,MD2 Pineapple (1 pc),24
+163,Local Watermelon (1 pc),24
+164,Crimson Seedless Grape (4.5kg),24
+165,Grapefruit (1 pc),24
+166,Green Apple,24
+167,Lime (100g/pack),24
+168,Salted Egg (6 pcs),16
+169,Eggs (Grade A/B/C) (30pcs/tray),16
+170,Omega Egg (10 pcs/tray),16
+171,Kampung Eggs (30pcs/tray),16
+172,Duck Egg (5 pcs),16
+173,Century Egg / Pidan (5 pcs),16
+174,Omega Egg (3×10 pcs),16
+175,Ma Cao Eggs 马草蛋 (Grade A),16
+176,Daun Sup / Leaf Celery (100g/pack),6
+177,Labu Air (+/-1kg per pack),2
+178,Bunga Kantan / Torch Ginger Flower (3 pcs/bundle),1
+179,Petai (200g/pack),4
+180,Turmeric / Kunyit Hidup (300g/pack),3
+181,Lengkuas / Galangal (300g/pack),3
+182,"Lime Leaves, Daun Limau (10 pcs/pack)",6
+183,Holland Pea / Snow Pea /130g*30p,4
+184,Green Chilli Padi/Cili Padi Hijau (100g/pack),2
+185,Mini Yam ( 7kg ),3
+186,Mint Leaves/Daun Pudina (100g/pack),6
+187,"Curry Leaves, Daun Kari (50g/pack)",6
+188,Chat Potato (15kg),3
+189,Honey Sweet Potato / 蜜糖番薯 +/-500g,3
+190,(Organic) Tomato / 番茄 +/-300g,2
+191,Sengkuang,1
+192,Green Pepper (1 pc),2
+193,Local Sweet Potato (Purple/Yellow) - 500g*10p,3
+194,Petola (500g+/-pack),2
+195,Yellow Pepper (1 pc),1
+196,Small Bittergourd (250g/pack),2
+197,Beetroot (500g/pack),3
+198,Sweet Potato (Japanese) / 日本番薯 +/-500g,3
+199,Red Chilli (200g/pack),2
+200,TAIWAN Sweet Potato/500kg*10p,3
+201,Red Pepper (1 pc),2
+202,Red Chilli Padi (100g/pack),2
+203,Local Leek /Korea Leek,6
+204,Shitake Mushroom (200g*25p),1
+205,Dai Pak Choy / Sawi Putih (250g/pack),6
+206,Hong Kong Nai Bak (200g/pack),6
+207,Butter Lettuce (1 pc),6
+208,(Organic) Mini Cos / Romaine Lettuce / 油麦 +/-280g,6
+209,Kuchai / Garlic Chives (100g/pack),6
+210,(Organic) Cabbage Shoot / Choy Tam / 菜旦 +/-270g,6
+211,Cherry Tomato (300g/pack),2
+212,AUS Jap Pumpkin / Butternut Pumpkin,2
+213,Washed Lotus Root (10kg),3
+214,Button Mushroom (200g/pack),5
+215,US / Russet Potato 120 /22.7kg,3
+216,Beijing Cabbage,6
+217,Chinese Parsley / Coriander / Daun Ketumbar (100g/pack),6
+218,Celery (15Kg),6
+219,Cauliflower(12kg),2
+220,Baby Corn (1 pack),2
+221,Almond Mushroom / King Oyster Mushroom,5
+222,Baby Siew Pak Choy (200g/pack),6
+223,Old Cucumber (1 pc),2
+224,Shimeji Mushroom(Brown/White)-150g*40p,5
+225,(Natural) Baby French Bean / 桂豆苗 +/-180g,4
+226,Ginger/Ginger King,3
+227,Eggplant / Brinjal / Aubergine (1 pc),2
+228,Long Bean (250g/pack),4
+229,Japanese Cucumber (500g/pack),2
+230,Hong Kong Kai Lan / 香港芥兰 (200g/pack),6
+231,NZ/Brown Onion/500g*10p,3
+232,Romaine (1 pc),6
+233,Lemongrass / Serai (3pcs/bundle),1
+234,AUS Cabbage/AUS Purple Cabbage,6
+235,Broccoli,1
+236,AUS Carrot(Farmgate/Ozzy/C3/Pack),1
+237,Siew Pak Choy (200g/pack),6
+238,Okra / Lady Finger (250g/pack),4
+239,Spring Onion (100g/pack),6
+240,White Garlic (CHN)/500g*10p,3
+241,Small Shallot(500g*10p),3
+242,Enoki Mushroom (100g*50p),5
+243,Ubi Kayu / Cassava / Yuca Root (+/-1kg per pack),3
+244,White Radish/Red Radish/Green Radish(10kg),3
+245,Choy Sum / Baby Choy Sum,6
