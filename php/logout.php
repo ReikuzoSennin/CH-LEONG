@@ -1,5 +1,9 @@
 <?php
     session_start();
-    unset($_SESSION["user"]);
-    header("Location:../index.php");
+    session_destroy();
+    echo '<script>
+        sessionStorage.clear();
+        window.location.href="../index.php";
+        </script>';
+    // header("Location:../index.php");
 ?>
