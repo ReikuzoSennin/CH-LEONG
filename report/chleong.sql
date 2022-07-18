@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2022 at 06:11 PM
+-- Generation Time: Jul 18, 2022 at 11:57 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -38,7 +38,8 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`cartID`, `userID`) VALUES
 (1, 1),
-(2, 2);
+(3, 3),
+(4, 4);
 
 -- --------------------------------------------------------
 
@@ -676,16 +677,18 @@ CREATE TABLE `users` (
   `username` varchar(30) NOT NULL,
   `userPass` varchar(255) NOT NULL,
   `userEmail` varchar(255) NOT NULL,
-  `dateRegistered` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `dateRegistered` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `userType` enum('Customer','Admin') NOT NULL DEFAULT 'Customer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userID`, `username`, `userPass`, `userEmail`, `dateRegistered`) VALUES
-(1, 'chleong.marketing', 'c4ca4238a0b923820dcc509a6f75849b', 'chleong.marketing@gmail.com', '2022-01-24 07:52:28'),
-(2, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test@test.com', '2022-01-24 13:00:24');
+INSERT INTO `users` (`userID`, `username`, `userPass`, `userEmail`, `dateRegistered`, `userType`) VALUES
+(1, 'chleong.marketing', 'c81e728d9d4c2f636f067f89cc14862c', 'chleong.marketing@gmail.com', '2022-07-10 08:36:14', 'Admin'),
+(3, 'test', 'c4ca4238a0b923820dcc509a6f75849b', 'test@gmail.com', '2022-07-18 09:56:48', 'Customer'),
+(4, 'admin', 'c4ca4238a0b923820dcc509a6f75849b', 'admin@gmail.com', '2022-07-09 11:29:16', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -1033,6 +1036,7 @@ ALTER TABLE `inventory`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`productID`),
+  ADD UNIQUE KEY `productName` (`productName`),
   ADD KEY `product-category` (`categoryID`);
 
 --
@@ -1046,6 +1050,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `variants`
   ADD PRIMARY KEY (`variantID`),
+  ADD UNIQUE KEY `variantName` (`variantName`),
   ADD KEY `productfk` (`productID`);
 
 --
@@ -1056,7 +1061,7 @@ ALTER TABLE `variants`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -1074,7 +1079,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `variants`
