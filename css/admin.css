@@ -1,0 +1,367 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: poppins-semibold,poppins,sans-serif;
+}
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 300px;
+    background-color: #1d524a;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+  
+.sidebar a {
+    display: block;
+    color: #fff;
+    padding: 16px;
+    text-decoration: none;
+}
+   
+.sidebar> a.active {
+    background-color: #308c7c;
+}
+  
+.sidebar> a:hover:not(.active) {
+    background-color: #04AA6D;
+}
+
+.page.active,
+.page:hover:not(.active) {
+    color: #fdbd1b;
+}
+
+#profile-pic {
+    margin: 30px auto 0;
+    border-radius: 150px;
+    border: none;
+    height: 190px;
+    width: 190px;
+    background-color: #cccacb;
+    position: relative;
+    overflow: hidden;
+}
+
+.user-list {
+    display: flex;
+    min-width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+.profile {
+    display: flex;
+    flex: 0 0 35%;
+    min-width: 400px;
+    padding: 16px;
+    margin: 16px 24px;
+    background-color: #04AA6D;
+    border-radius: 8px;
+}
+
+.profile a {
+    text-decoration: none;
+    color: #000;
+}
+
+.profile .profile-info {
+    margin: 15px;
+}
+
+p,
+h4,
+h3{
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.profile #profile-pic {
+    border-radius: 50px;
+    min-height: 90px;
+    max-height: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    margin: 0 auto;
+}
+
+#pic {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+    cursor: pointer;
+    opacity: .8;
+}
+
+#pic:hover {
+    opacity: 1;
+}
+
+#username {
+    text-align: center;
+    color: #fff;
+}
+
+.content {
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    background-color: #2a7c6f;
+    padding: 20px 50px 20px 350px;
+    color: #fff;
+}
+
+.admin {
+    display: flex;
+    padding-bottom: 16px;
+}
+
+.admin a {
+    padding: 16px 50px;
+    width: 100%;
+    text-align: center;
+    font-size: smaller;
+}
+
+.admin a:hover {
+    color: #fdbd1b;
+}
+
+.info {
+    background-color: #fff;
+    color: #000;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.icon {
+    font-size: large;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #fdbd1b;
+}
+
+.icon-button {
+    border: none;
+    background-color: transparent;
+}
+
+.text-end {
+    width: 100%;
+    text-align: end;
+}
+
+#profile-details {
+    flex: 3;
+} 
+
+#profile-details h1 {
+    text-align: left;
+    font-weight: lighter;
+    color: #2c8c7f;
+}
+
+#profile-details p {
+    color: #2c8c7f;
+}
+
+input {
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #2c8c7f;
+    color: #2c8c7f;
+    outline: none;
+}
+
+input::placeholder {
+    color: #2c8c7f;
+}
+
+input:focus,
+input:hover {
+    border: 1px solid #1c524b;
+}
+
+input[type='button'],
+input[type='submit'] {
+    cursor: pointer;
+}
+ 
+#pass-change,
+#addProduct-button,
+#addVariant-button {
+    background-color: #7cd2c6;
+    color: #fff;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+#pass-change:hover,
+#addProduct-button:hover,
+#addVariant-button:hover {
+    background-color: #1c524b;
+}
+
+.inline {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.products-list {
+    padding-left: 40px;
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+}
+
+.product {
+    flex: 0 0 25%;
+    margin: 30px;
+    min-width: 200px;
+    max-width: 200px;
+}
+
+#display {
+    width: 100%;
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+}
+
+.img-container {
+    height: 100px;
+    width: 100px;
+    position: relative;
+    border: 1px solid rgba(42, 124, 111, 0.2);
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+.pencil-container,
+.delete-container {
+    padding: 0 40px;
+}
+
+.pencil-container {
+    margin-left: auto;
+}
+
+.text-container {
+    align-items: center;
+}
+
+.input-box { 
+    position: relative; 
+}
+
+.price:before {
+    content: "RM";
+    text-align: center;
+    position: relative;
+    color: #2c8c7f;
+    left:33px;
+    font-size: small;
+}
+
+.variant-price {
+    padding-left: 40px;
+}
+
+.remove-btn {
+    padding: 9px 9px;
+    border: 1px solid #2A7C6F;
+    color: #2A7C6F;
+    background-color: #FFFEFC;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    float: right;
+}
+
+.delete-variant {
+    border-left: none;
+}
+
+.page-container{
+    width: 95%;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagelabel {
+    margin: 0 4px;
+    color: #2A7C6F;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pages {
+    display: none;
+}
+
+.pages:hover+.pagelabel{
+    color: #fdbd1b;
+}
+
+.pages:checked+.pagelabel {
+    color: #fdbd1b;
+}
+
+@media screen and (max-width: 900px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+    .content {
+        padding: 20px;
+        color: #fff;
+    }
+    .user-list {
+        justify-content: center;
+    }
+    .table {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .product-name {
+        width: 100px;
+        text-overflow: ellipsis;
+    }
+}
+  
+@media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+}

@@ -28,7 +28,7 @@ header {
     z-index: 99;
 }
 
-header #nav {
+header .nav {
     display: flex;  
     list-style: none;
     text-align: center;
@@ -36,7 +36,7 @@ header #nav {
     margin: 0 auto;
 }
 
-header #nav > li {
+header .nav > li {
     margin-left: 20px;
     align-self: flex-end;
 }

@@ -21,25 +21,33 @@
     width: 100%;
     top: -60px;
     padding-top: 60px;
-    z-index: -1;
 }
 
 #profile-pic {
     margin: 0 auto;
-    border-radius: 50px;
-    height: 90px;
-    width: 90px;
+    border-radius: 80px;
+    height: 120px;
+    width: 120px;
     background-color: #cccacb;
     position: relative;
     overflow: hidden;
 }
 
-#profile-pic i {
-    color: #fff;
-    font-size: 70px;
-    position: absolute;
-    bottom: .5%;
-    left: 15%;
+#pic {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;            /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming)*/
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+    cursor: pointer;
+    opacity: .8;
+}
+
+#pic:hover {
+    opacity: 1;
 }
 
 #profile-details {
