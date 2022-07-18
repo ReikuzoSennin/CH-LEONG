@@ -7,19 +7,19 @@
 </head>
 <script type="text/javascript">  
 function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
-$(document).ready(function() {
-    $("[href]").each(function() {
-        if (this.href == window.location.href) {
-            $(this).addClass("active");
-        }
-    });
+$(document).ready(function () {
+    $('.nav').find('a.active').removeClass('active');
+
+    var sPath = window.location.pathname;
+    var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+    $('.nav').find('a[href="' + sPage + '"]').addClass('active');
 });
 </script>
 <header>
     <img id="logo" src="media/chleong.png" alt="">
-    <ul id="nav">
+    <ul class="nav">
         <li class="page"><a href="home.php">Home</a></li>
         <li class="page"><a href="about.php">About Us</a></li>
         <li class="page"><a href="team.php">Our Team</a></li>

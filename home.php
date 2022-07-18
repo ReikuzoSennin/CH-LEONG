@@ -34,7 +34,9 @@ At first he only sold vegetables in the markets and as the business grew he beca
                     JOIN category c
                     ON p.categoryID = c.categoryID
                     WHERE c.categoryName = '".$value."'
-                    GROUP BY v.productID ORDER BY v.productID LIMIT 6";
+                    GROUP BY v.productID
+                    ORDER BY v.productID
+                    LIMIT 6";
             $results = mysqli_query($con, $sql);
             while ($product = mysqli_fetch_array($results)) {
                 echo '<div class="product">';

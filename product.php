@@ -31,7 +31,8 @@
             echo "<img src='".$product['variantImage']."'>";
         echo '</div>';
         echo '<div id="text-container">';
-            echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['productName'])."</p>";
+            // echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['productName'])."</p>";
+            echo "<p>".$product['productName']."</p>";
             echo "<p>RM".$product['variantPrice']."</p>";
             $sql = "SELECT * FROM variants
                     WHERE productID = ".$product['productID']."";

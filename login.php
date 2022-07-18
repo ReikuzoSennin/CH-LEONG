@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In | Ch Leong Enterprise Sdn Bhd</title>
     <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="media/chleong.png">
 </head>
 <body>
     <section id="login">
