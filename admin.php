@@ -30,7 +30,8 @@
                 case 'number':
                 case 'tel':
                 case 'email':
-                    if(this.class!='keep-data') {
+                    if(this.classList.contains('keep-data')) {} 
+                    else {
                         jQuery(this).val('');
                         break;
                     };
@@ -354,7 +355,7 @@
         </div>
         <a href="#"  onclick="show('Users');" class="page active"><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Users</a>
         <a href="#" onclick="show('Inventory');" class="page"><i class="fa-solid fa-boxes-stacked"></i></i>&nbsp;&nbsp;Inventory</a>
-        <a href="#" onclick="show('Orders');" class="page"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;Orders</a>
+        <!-- <a href="#" onclick="show('Orders');" class="page"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;Orders</a> -->
     </section>
     <section class="content" id="Users">
         <h1>Users</h1>
