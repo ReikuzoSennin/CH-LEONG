@@ -543,6 +543,7 @@ if(isset($_POST['submitProduct'])) {
     $id_array = $_POST['variant-id'];
     $variant_array = $_POST['variant-name'];
     $price_array = $_POST['variant-price'];
+    $inventory_array = $_POST['variant-inventory'];
 
     if($id!="") {//IF EXISTING PRODUCT
         $sql = "SELECT * FROM products WHERE productID=".$id;
@@ -603,6 +604,92 @@ if(isset($_POST['submitProduct'])) {
         foreach($id_array as $i => $variantId) {
             foreach($variant_array as $i2 => $variantName) {
                 foreach($price_array as $i3 => $price) {
+                    foreach($inventory_array as $i4 => $inventory) {
+                        if($i===$i2 && $i2===$i3 && $i3===$i4) {
+                            // if ($price<1) {array_push($errors, "Invalid Price");}
+                            if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
+                                // Notice how to grab MIME type.
+                                $mime_type = mime_content_type($_FILES['variant-image']['tmp_name'][$i]);
+                                // If you want to allow certain files
+                                $allowed_file_types = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+                                if (! in_array($mime_type, $allowed_file_types)) {
+                                    // File type is NOT allowed.
+                                    echo '<script>alert("Sorry, only JPG, JPEG, PNG & GIF files are allowed.")</script>';
+                                    $uploadOk = 0;
+                                }
+                                // Check file size
+                                if ($_FILES["variant-image"]["size"][$i] > 500000) {
+                                    // File size is NOT allowed.
+                                    echo '<script>alert("Sorry, your file is too large.")</script>';
+                                    $uploadOk = 0;
+                                }
+                                if (file_exists("media/Site Files/".$_FILES['variant-image']['name'][$i])) {
+                                    echo '<script>alert("Sorry, your file name already exist.")</script>';
+                                    $uploadOk = 0;
+                                }
+                            }
+                            if ($uploadOk == 1) {
+                                //if default, don't upload
+                                if($_FILES['variant-image']['tmp_name'][$i]=="") {
+                                    $_FILES['variant-image']['name'][$i]="default.jpg";
+                                    $_FILES['variant-image']['type'][$i]="image/jpg";
+                                }
+                                $newFilePath = "media/Site Files/" . $_FILES['variant-image']['name'][$i];
+                                //if new image, upload
+                                if($_FILES['variant-image']['tmp_name'][$i]!=="") {
+                                    move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
+                                }
+                                
+                                if($variantId!="") {//IF EXISTING VARIANT
+                                    $sql = "SELECT * FROM variants WHERE variantID=".$variantId." AND productID=".$id;
+                                    $result = mysqli_query($con, $sql);
+                                    $variant = mysqli_fetch_array($result);
+
+                                    if($newFilePath==="media/Site Files/default.jpg"){//IF OLD IMAGE
+                                        $sql = "UPDATE variants SET
+                                        variantName='".$variantName."',
+                                        variantPrice=".$price."
+                                        WHERE variantID=".$variant['variantID'];
+                                        mysqli_query($con, $sql);
+                                    }
+                                    else {//IF NEW IMAGE
+                                        $sql = "UPDATE variants SET
+                                                variantName='".$variantName."',
+                                                variantPrice=".$price.",
+                                                variantImage='".$newFilePath."'
+                                                WHERE variantID=".$variant['variantID'];
+                                        mysqli_query($con, $sql);
+                                    }
+                                    $sql = "UPDATE inventory SET
+                                        productInventory='".$inventory."'
+                                        WHERE variantID=".$variant['variantID'];
+                                    mysqli_query($con, $sql);
+                                } else { //IF NEW VARIANT
+                                    $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
+                                            VALUES('$variantName', '$price', '$newFilePath', '".$product['productID']."')";
+                                    mysqli_query($con, $sql);
+
+                                    $sql = "SELECT * FROM variants
+                                            WHERE variantName='".$variantName."'
+                                            AND productID='".$product['productID']."'";
+                                    $result = mysqli_query($con, $sql);
+                                    $variant = mysqli_fetch_array($result);
+
+                                    $sql = "INSERT INTO inventory (variantID, productInventory)
+                                            VALUES('".$variant['variantID']."', '".$inventory."')";
+                                    mysqli_query($con, $sql);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        //IF NEW PRODUCT
+        foreach($variant_array as $i => $variantName) {
+            foreach($price_array as $i2 => $price) {
+                foreach($inventory_array as $i3 => $inventory) {
                     if($i===$i2 && $i2===$i3) {
                         // if ($price<1) {array_push($errors, "Invalid Price");}
                         if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
@@ -637,98 +724,20 @@ if(isset($_POST['submitProduct'])) {
                             if($_FILES['variant-image']['tmp_name'][$i]!=="") {
                                 move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
                             }
-                            
-                            if($variantId!="") {//IF EXISTING VARIANT
-                                $sql = "SELECT * FROM variants WHERE variantID=".$variantId." AND productID=".$id;
-                                $result = mysqli_query($con, $sql);
-                                $variant = mysqli_fetch_array($result);
+                            $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
+                                    VALUES('$variantName', '$price', '$newFilePath', '".$product['productID']."')";
+                            mysqli_query($con, $sql);
 
-                                if($newFilePath==="media/Site Files/default.jpg"){//IF OLD IMAGE
-                                    $sql = "UPDATE variants SET
-                                    variantName='".$variantName."',
-                                    variantPrice=".$price."
-                                    WHERE variantID=".$variant['variantID'];
-                                    mysqli_query($con, $sql);
-                                }
-                                else {//IF NEW IMAGE
-                                    $sql = "UPDATE variants SET
-                                            variantName='".$variantName."',
-                                            variantPrice=".$price.",
-                                            variantImage='".$newFilePath."'
-                                            WHERE variantID=".$variant['variantID'];
-                                    mysqli_query($con, $sql);
-                                }
-                            } else { //IF NEW VARIANT
-                                $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
-                                        VALUES('$variantName', '$price', '$newFilePath', '".$product['productID']."')";
-                                mysqli_query($con, $sql);
+                            $sql = "SELECT * FROM variants
+                                    WHERE variantName='".$variantName."'
+                                    AND productID='".$product['productID']."'";
+                            $result = mysqli_query($con, $sql);
+                            $variant = mysqli_fetch_array($result);
 
-                                $sql = "SELECT * FROM variants
-                                        WHERE variantName='".$variantName."'
-                                        AND productID='".$product['productID']."'";
-                                $result = mysqli_query($con, $sql);
-                                $variant = mysqli_fetch_array($result);
-
-                                $sql = "INSERT INTO inventory (variantID)
-                                        VALUES('".$variant['variantID']."')";
-                                mysqli_query($con, $sql);
-                            }
+                            $sql = "INSERT INTO inventory (variantID)
+                                    VALUES('".$variant['variantID']."')";
+                            mysqli_query($con, $sql);
                         }
-                    }
-                }
-            }
-        }
-    } else {
-        //IF NEW PRODUCT
-        foreach($variant_array as $i => $variantName) {
-            foreach($price_array as $i2 => $price) {
-                if($i===$i2) {
-                    // if ($price<1) {array_push($errors, "Invalid Price");}
-                    if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
-                        // Notice how to grab MIME type.
-                        $mime_type = mime_content_type($_FILES['variant-image']['tmp_name'][$i]);
-                        // If you want to allow certain files
-                        $allowed_file_types = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-                        if (! in_array($mime_type, $allowed_file_types)) {
-                            // File type is NOT allowed.
-                            echo '<script>alert("Sorry, only JPG, JPEG, PNG & GIF files are allowed.")</script>';
-                            $uploadOk = 0;
-                        }
-                        // Check file size
-                        if ($_FILES["variant-image"]["size"][$i] > 500000) {
-                            // File size is NOT allowed.
-                            echo '<script>alert("Sorry, your file is too large.")</script>';
-                            $uploadOk = 0;
-                        }
-                        if (file_exists("media/Site Files/".$_FILES['variant-image']['name'][$i])) {
-                            echo '<script>alert("Sorry, your file name already exist.")</script>';
-                            $uploadOk = 0;
-                        }
-                    }
-                    if ($uploadOk == 1) {
-                        //if default, don't upload
-                        if($_FILES['variant-image']['tmp_name'][$i]=="") {
-                            $_FILES['variant-image']['name'][$i]="default.jpg";
-                            $_FILES['variant-image']['type'][$i]="image/jpg";
-                        }
-                        $newFilePath = "media/Site Files/" . $_FILES['variant-image']['name'][$i];
-                        //if new image, upload
-                        if($_FILES['variant-image']['tmp_name'][$i]!=="") {
-                            move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
-                        }
-                        $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
-                                VALUES('$variantName', '$price', '$newFilePath', '".$product['productID']."')";
-                        mysqli_query($con, $sql);
-
-                        $sql = "SELECT * FROM variants
-                                WHERE variantName='".$variantName."'
-                                AND productID='".$product['productID']."'";
-                        $result = mysqli_query($con, $sql);
-                        $variant = mysqli_fetch_array($result);
-
-                        $sql = "INSERT INTO inventory (variantID)
-                                VALUES('".$variant['variantID']."')";
-                        mysqli_query($con, $sql);
                     }
                 }
             }
@@ -756,8 +765,13 @@ if(isset($_POST['editProduct'])) {
     $sql = "SELECT * FROM variants WHERE productID='".$product['productID']."'";
     $results = mysqli_query($con, $sql);
     while($variants = mysqli_fetch_assoc($results)) {
+        $sql = "SELECT * FROM inventory WHERE variantID='".$variants['variantID']."'";
+        $result = mysqli_query($con, $sql);
+        $inventory = mysqli_fetch_assoc($result);
+        array_push($variants,array_values($inventory));
         array_push($product,array_values($variants));
     }
+
     echo json_encode(array_values($product));
 }
 ?>
