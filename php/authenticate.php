@@ -55,6 +55,7 @@ if (isset($_POST['register'])) {
             // get id of the created user
 		    $results = oci_parse($con, "SELECT * FROM users WHERE userEmail='$email' AND userPass='$password'");
             oci_execute($results);
+            $nrows = oci_fetch_all($results, $res);
             $logged_in_user = $res;
 
             $_SESSION['user'] = $logged_in_user; // put logged in user in session
