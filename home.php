@@ -29,21 +29,20 @@ At first he only sold vegetables in the markets and as the business grew he beca
         <?php
             echo "<div id='carousel'>";
             $sql = "SELECT * FROM (
-                        SELECT * FROM VARIANTS V
-                        JOIN PRODUCTS P
-                        ON v.productid=p.productid
-                        JOIN CATEGORY C
-                        ON p.categoryid=c.categoryid
-                        WHERE variantid IN
-                        (
-                            SELECT variantID FROM
-                            (
-                                SELECT variantID, row_number() over (partition by productid order by productid desc) rn
+                        SELECT * FROM VARIANTS V 
+                        JOIN PRODUCTS P 
+                        USING (productid) 
+                        JOIN CATEGORY C 
+                        USING (categoryid) 
+                        WHERE variantid IN ( 
+                            SELECT variantID FROM 
+                            ( 
+                                SELECT variantID, row_number() over (partition by productid order by productid asc) rn2 
                                 FROM VARIANTS
-                            )v
-                            WHERE rn=1
+                            ) WHERE rn2=1 
                         )
-                        AND c.categoryname='".$value."'
+                        AND categoryname='".$value."'
+                        ORDER BY variantid
                     ) WHERE rownum <= 6";
             $results = oci_parse($con, $sql);
             oci_execute($results);
