@@ -70,6 +70,7 @@
 
 .profile .profile-info {
     margin: 15px;
+    width: 100%;
 }
 
 p,
@@ -285,10 +286,6 @@ input[type='submit'] {
     color: #2c8c7f;
     left:33px;
     font-size: small;
-}
-
-.inventory {
-    margin-left: 33px;
 }
 
 .variant-price {
