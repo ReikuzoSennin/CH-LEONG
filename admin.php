@@ -41,7 +41,7 @@
                     break;
                 case 'select-one':
                 case 'select-multiple':
-                    jQuery(this).val('1');
+                    jQuery(this).prop('selectedIndex', 0);
                     break;
             }
         });
@@ -127,8 +127,23 @@
         deleteButton.name = "delete-variant";
         deleteButton.textContent = "✕";
         table.appendChild(deleteButton);
-        // // Append a line break 
-        // container.appendChild(document.createElement("br"));
+
+        var textcontainer3 = document.createElement("div");
+        textcontainer3.classList.add("text-container", "inventory");
+        table.appendChild(textcontainer3);
+        var select = document.createElement("select");
+        select.name = 'variant-inventory[]';
+        select.classList.add('variant-inventory');
+        textcontainer3.appendChild(select);
+        var option = document.createElement("option");
+        var options = document.getElementsByClassName('options-inventory');
+        option.text = options[0].value;
+        option.value =  options[0].value;
+        select.appendChild(option);
+        var option2 = document.createElement("option");
+        option2.text = options[1].value;
+        option2.value =  options[1].value;
+        select.appendChild(option2);
     };
     // show the given page, hide the rest
     function show(elementID) {
@@ -269,6 +284,12 @@
                         product.find(".variant-name")[0].value = data[3][1];
                         product.find(".variant-price")[0].value = data[3][2];
                         product.find(".variant-id")[0].value = data[3][0];
+                        var select = product.find(".variant-inventory")[0];
+                        for ( var i = 0; i<select.options.length; i++ )
+                        {
+                            o = select.options[i];
+                            if (data[3][5][1]== o.text){o.selected = true;}
+                        }
                         if(data.length>3) {
                             //add row for every variant, skip first variant
                             for(i=4; i<data.length; i++) {if(i>3){addFields();}}
@@ -281,6 +302,12 @@
                                 table.find(".variant-name")[k].value = data[i][1];
                                 table.find(".variant-price")[k].value = data[i][2];
                                 table.find(".variant-id")[k].value = data[i][0];
+                                select = table.find(".variant-inventory")[k];
+                                for ( var j = 0; j < select.options.length; j++ )
+                                {
+                                    o = select.options[j];
+                                    if (data[i][5][1]== o.text){o.selected = true;}
+                                }
                             }
                         }
                     }
@@ -484,6 +511,25 @@
                                 echo "<input type='text' placeholder='0' maxlength='6' size='6' pattern='[0-9.,]+' name='variant-price[]' class='variant-price' data-type='number' required>";
                             echo "</div>";
                             echo "<div style='padding:15px';></div>";
+                            echo "<div class='text-container inventory'>";
+                                echo "<select name='variant-inventory[]' class='variant-inventory'>";
+                                $sql = "SELECT *
+                                FROM INVENTORY
+                                WHERE variantID IN
+                                (
+                                    SELECT variantid FROM
+                                    (
+                                        SELECT variantid, row_number() over (partition by productinventory order by productinventory asc) rn
+                                        FROM INVENTORY
+                                    )WHERE rn=1
+                                )";
+                                $inventory = oci_parse($con, $sql);
+                                oci_execute($inventory);
+                                while($row = oci_fetch_array($inventory)) {
+                                    echo "<option value='".$row['PRODUCTINVENTORY']."' class='options-inventory'>".$row['PRODUCTINVENTORY']."</option>";
+                                }
+                                echo "</select>";
+                            echo "</div>";
                         echo "</div>";
                         echo "<div id='container'></div>";
                         echo "<input type='button' value='Add another variant' onclick='addFields()' id='addVariant-button'>&nbsp;";
