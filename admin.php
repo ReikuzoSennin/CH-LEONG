@@ -4,7 +4,7 @@
     if(!isset($_SESSION["user"])) {
         header('Location:login.php');
     }
-    if(isset($_SESSION["user"]) && $_SESSION["user"]['userType']!=="Admin") {
+    if(isset($_SESSION["user"]) && $_SESSION["user"]['USERTYPE'][0]!=="Admin") {
         header('Location:home.php');
     }
 ?>
@@ -41,7 +41,7 @@
                     break;
                 case 'select-one':
                 case 'select-multiple':
-                    jQuery(this).prop('selectedIndex', 0);
+                    jQuery(this).val('1');
                     break;
             }
         });
@@ -127,23 +127,8 @@
         deleteButton.name = "delete-variant";
         deleteButton.textContent = "✕";
         table.appendChild(deleteButton);
-
-        var textcontainer3 = document.createElement("div");
-        textcontainer3.classList.add("text-container", "inventory");
-        table.appendChild(textcontainer3);
-        var select = document.createElement("select");
-        select.name = 'variant-inventory[]';
-        select.classList.add('variant-inventory');
-        textcontainer3.appendChild(select);
-        var option = document.createElement("option");
-        var options = document.getElementsByClassName('options-inventory');
-        option.text = options[0].value;
-        option.value =  options[0].value;
-        select.appendChild(option);
-        var option2 = document.createElement("option");
-        option2.text = options[1].value;
-        option2.value =  options[1].value;
-        select.appendChild(option2);
+        // // Append a line break 
+        // container.appendChild(document.createElement("br"));
     };
     // show the given page, hide the rest
     function show(elementID) {
@@ -284,12 +269,6 @@
                         product.find(".variant-name")[0].value = data[3][1];
                         product.find(".variant-price")[0].value = data[3][2];
                         product.find(".variant-id")[0].value = data[3][0];
-                        var select = product.find(".variant-inventory")[0];
-                        for ( var i = 0, l = select.options.length, o; i < l; i++ )
-                        {
-                            o = select.options[i];
-                            if (data[3][5][1]== o.text){o.selected = true;}
-                        }
                         if(data.length>3) {
                             //add row for every variant, skip first variant
                             for(i=4; i<data.length; i++) {if(i>3){addFields();}}
@@ -302,13 +281,6 @@
                                 table.find(".variant-name")[k].value = data[i][1];
                                 table.find(".variant-price")[k].value = data[i][2];
                                 table.find(".variant-id")[k].value = data[i][0];
-                                select = table.find(".variant-inventory")[k];
-                                console.log(select);
-                                for ( var j = 0, l = select.options.length, o; j < l; j++ )
-                                {
-                                    o = select.options[j];
-                                    if (data[i][5][1]== o.text){o.selected = true;}
-                                }
                             }
                         }
                     }
@@ -362,7 +334,7 @@
             <label>
             <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="fileToUpload" style="display: none;" onchange="document.getElementById('upload-user').click();">
             <?php
-            $file_name = $_SESSION['user']['userID'];
+            $file_name = $_SESSION['user']['USERID'][0];
             $destination = "media/users/";
             $extensions = array('.jpg', '.png', '.jpeg', '.gif');
             $src = "media/users/default.png";
@@ -374,12 +346,12 @@
             }
             echo "<img id='pic' src='".$src."'>";
             echo "</label>";
-            echo "<input type='hidden' name='userID' value='".$_SESSION['user']['userID']."'>";
+            echo "<input type='hidden' name='userID' value='".$_SESSION['user']['USERID'][0]."'>";
             ?>
             <input type="submit" style="display: none;" id="upload-user" name="upload-user">
             </form>
         </div>
-        <?php echo "<br><p id='username'>".(isset($_SESSION['user']) ? $_SESSION['user']['username'] : "")."</p>" ?>
+        <?php echo "<br><p id='username'>".(isset($_SESSION['user']) ? $_SESSION['user']['USERNAME'][0] : "")."</p>" ?>
         <div class="admin">
             <a href="#" onclick="show('Profile');" class="page">Profile</a>
             <a href="php/logout.php">Logout</a>
@@ -397,43 +369,45 @@
             <hr><br>
             <?php
                 $sql = "SELECT * FROM users WHERE userType='Admin' ORDER BY dateRegistered";
-                $results = mysqli_query($con, $sql);
+                $results = oci_parse($con, $sql);
+                oci_execute($results);
                 echo "<h3>Admins</h3>";
                 echo "<div class='user-list'>";
-                while ($admin= mysqli_fetch_array($results)) {
+                while ($admin= oci_fetch_array($results)) {
                     echo "<div class='profile'>";
                         $src = $destination."default.png";
-                        foreach (glob($destination.$admin['userID'].".*") as $userpic) {
+                        foreach (glob($destination.$admin['USERID'].".*") as $userpic) {
                             $src = $userpic;
                         }
                         echo "<img id='profile-pic' src='".$src."'>";
                         echo "<div class='profile-info'>";
-                        echo "<a class='fa-solid fa-envelope icon text-end' href='mailto:".$admin['userEmail']."' target='_blank'></a>";
-                        echo "<h4>".$admin['username']."</h4>";
-                        echo "<p>".$admin['userEmail']."</p>";
-                        echo "<p>Date Joined: ".$admin['dateRegistered']."</p>";
+                        echo "<a class='fa-solid fa-envelope icon text-end' href='mailto:".$admin['USEREMAIL']."' target='_blank'></a>";
+                        echo "<h4>".$admin['USERNAME']."</h4>";
+                        echo "<p>".$admin['USEREMAIL']."</p>";
+                        echo "<p>Date Joined: ".$admin['DATEREGISTERED']."</p>";
                     echo "</div></div>";
                 }
                 echo "</div>";
                 $sql = "SELECT * FROM users WHERE userType='Customer' ORDER BY dateRegistered";
-                $results = mysqli_query($con, $sql);
+                $results = oci_parse($con, $sql);
+                oci_execute($results);
                 echo "<h3>Customers</h3>";
                 echo "<div class='user-list'>";
-                while ($cust= mysqli_fetch_array($results)) {
+                while ($cust= oci_fetch_array($results)) {
                     echo "<form method='post'>";
                     echo "<div class='profile'>";
                         $src = $destination."default.png";
-                        foreach (glob($destination.$cust['userID'].".*") as $userpic) {
+                        foreach (glob($destination.$cust['USERID'].".*") as $userpic) {
                             $src = $userpic;
                         }
                         echo "<img id='profile-pic' src='".$src."'>";
                         echo "<div class='profile-info'>";
                             echo "<button name='delete-user' class='icon-button text-end'>";
                             echo "<i class='fa-solid fa-trash-can icon' name='delete-user'></i></button>";
-                            echo "<h4>".$cust['username']."</h4>";
-                            echo "<p>".$cust['userEmail']."</p>";
-                            echo "<p>Date Joined: ".$cust['dateRegistered']."</p>";
-                            echo "<input type='hidden' value='".$cust['userID']."' name='user-id'>";
+                            echo "<h4>".$cust['USERNAME']."</h4>";
+                            echo "<p>".$cust['USEREMAIL']."</p>";
+                            echo "<p>Date Joined: ".$cust['DATEREGISTERED']."</p>";
+                            echo "<input type='hidden' value='".$cust['USERID']."' name='user-id'>";
                     echo "</div></form></div>";
                 }
                 echo "</div>";
@@ -472,13 +446,25 @@
                         echo "<div class='text-end'>";
                             echo "<label for='category-name'>Category:</label>";
                             echo "<select name='category-id' id='category-id'>";
-                            $sql = "SELECT * FROM category GROUP BY categoryName ORDER BY categoryID";
-                            $category = mysqli_query($con, $sql);
-                            while($row = mysqli_fetch_array($category)) {
-                                echo "<option value='".$row['categoryID']."'>".$row['categoryName']."</option>";
-                                $subcategory = mysqli_query($con, "SELECT * FROM category WHERE categoryName='".$row['categoryName']."' AND subCategoryName<>'' ORDER BY categoryID");
-                                while($row2 = mysqli_fetch_array($subcategory)) {
-                                    echo "<option value='".$row2['categoryID']."'>--".$row2['subCategoryName']."</option>";
+                            $sql = "SELECT * FROM CATEGORY
+                            WHERE CATEGORYID IN
+                            (
+                                SELECT CATEGORYID FROM
+                                (
+                                    SELECT CATEGORYID, row_number() over (partition by CATEGORYNAME order by CATEGORYNAME asc) rn
+                                    FROM CATEGORY
+                                    ORDER BY CATEGORYID
+                                )WHERE RN=1
+                            )ORDER BY CATEGORYID";
+                            $category = oci_parse($con, $sql);
+                            oci_execute($category);
+                            while($row = oci_fetch_array($category)) {
+                                echo "<option value='".$row['CATEGORYID']."'>".$row['CATEGORYNAME']."</option>";
+                                $sql = "SELECT * FROM category WHERE categoryName='".$row['CATEGORYNAME']."' AND subCategoryName IS NOT NULL ORDER BY categoryID";
+                                $subcategory = oci_parse($con, $sql);
+                                oci_execute($subcategory);
+                                while($row2 = oci_fetch_array($subcategory)) {
+                                    echo "<option value='".$row2['CATEGORYID']."'>--".$row2['SUBCATEGORYNAME']."</option>";
                                 }
                             }
                             echo "</select>";
@@ -498,15 +484,6 @@
                                 echo "<input type='text' placeholder='0' maxlength='6' size='6' pattern='[0-9.,]+' name='variant-price[]' class='variant-price' data-type='number' required>";
                             echo "</div>";
                             echo "<div style='padding:15px';></div>";
-                            echo "<div class='text-container inventory'>";
-                                echo "<select name='variant-inventory[]' class='variant-inventory'>";
-                                $sql = "SELECT * FROM inventory GROUP BY productInventory";
-                                $inventory = mysqli_query($con, $sql);
-                                while($row = mysqli_fetch_array($inventory)) {
-                                    echo "<option value='".$row['productInventory']."' class='options-inventory'>".$row['productInventory']."</option>";
-                                }
-                                echo "</select>";
-                            echo "</div>";
                         echo "</div>";
                         echo "<div id='container'></div>";
                         echo "<input type='button' value='Add another variant' onclick='addFields()' id='addVariant-button'>&nbsp;";
@@ -528,13 +505,13 @@
             <div id="profile-details">
                 <form action="" method="post">
                     <h1>Username</h1>
-                    <input type="text" name="username" class="profile-form keep-data" placeholder="Username" <?php echo "value='".(isset($_SESSION['user']) ? $_SESSION['user']['username'] : "")."'"?> >
+                    <input type="text" name="username" class="profile-form keep-data" placeholder="Username" <?php echo "value='".(isset($_SESSION['user']) ? $_SESSION['user']['USERNAME'][0] : "")."'"?> >
                     <?php echo "<br><p id='error'>".(isset($_SESSION['username']) ? $_SESSION['username'] : "")."</p>" ?><br>
                     <input type="hidden" name="rename">
                     <?php unset($_SESSION['username']); ?>
                 </form><br>
                 <h1>Email</h1>
-                <?php echo "<p>".(isset($_SESSION['user']) ? $_SESSION['user']['userEmail'] : "")."</p>"?><br><br>
+                <?php echo "<p>".(isset($_SESSION['user']) ? $_SESSION['user']['USEREMAIL'][0] : "")."</p>"?><br><br>
                 <form action="" method="post">
                     <h1>Password</h1>
                     <input type="password" name="password1" class="profile-form" placeholder="New Password" required>

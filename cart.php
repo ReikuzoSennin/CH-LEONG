@@ -105,35 +105,38 @@
         </div>
         <div id="cart-container">
             <?php
-            $results = mysqli_query($con, "SELECT * FROM cart_items WHERE cartID IN (SELECT cartID FROM cart WHERE userID='".$_SESSION['user']['userID']."')");
-            if (mysqli_num_rows($results) <> 0) {
+            $results = oci_parse($con, "SELECT * FROM cart_items WHERE cartID IN (SELECT cartID FROM cart WHERE userID='".$_SESSION['user']['USERID'][0]."')");
+            oci_execute($results);
+            $nrows = oci_fetch_all($results, $res);
+            if ($nrows <> 0) {
             echo '<div id="product-list">';
                 echo "<h1>My cart</h1>";
                 echo "<hr class='solid'>";
                 echo "<table>";
                 echo "<form action='' id='quantity-change' method='post'>";
                 $totalprice = 0;
-                while ($item = mysqli_fetch_array($results)) {
-                    $result = mysqli_query($con, "SELECT * FROM variants WHERE variantID='".$item['variantID']."' ");
-                    $product = mysqli_fetch_array($result);
+                for($i=0; $i<$nrows; $i++) {
+                    $result = oci_parse($con, "SELECT * FROM variants WHERE variantID='".$res['VARIANTID'][$i]."' ");
+                    oci_execute($result);
+                    $product = oci_fetch_array($result);
                     echo "<tr>";
                     echo "<td width=15%;><div class='img-container'>";
-                        echo "<img src='".$product['variantImage']."'>";
+                        echo "<img src='".$product['VARIANTIMAGE']."'>";
                     echo "</div></td>";
                     echo "<td width=55%;><div class='text-container'>";
                         // echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['variantName'])."</p>";
-                        echo "<p>".($product['variantName'])."</p>";
-                        echo "<p>RM".$product['variantPrice']."</p>";
+                        echo "<p>".($product['VARIANTNAME'])."</p>";
+                        echo "<p>RM".$product['VARIANTPRICE']."</p>";
                     echo "</div></td>";
                     echo "<td width=18%;><input type='button' class='subs' value='&minus;'>";
-                    echo "<input type='hidden' name='id[]' value='".$product['variantID']."'>";
-                    echo "<input type='number' class='quantity' value='".$item['quantity']."' min='1' max='99' name='quantity[]' onChange='this.form.submit()'>";
+                    echo "<input type='hidden' name='id[]' value='".$product['VARIANTID']."'>";
+                    echo "<input type='number' class='quantity' value='".$res['QUANTITY'][$i]."' min='1' max='99' name='quantity[]' onChange='this.form.submit()'>";
                     echo "<input type='button' class='adds' value='&plus;'></td>";
                     echo "<input type='hidden' name='quantity-change'>";
-                    $productprice = $item['quantity']*$product['variantPrice'];
+                    $productprice = $res['QUANTITY'][$i]*$product['VARIANTPRICE'];
                     $totalprice += $productprice;
                     echo "<td width=13%;><p>RM".$productprice.".00</p></td>";
-                    echo "<td width=13%;><button value='".$product['variantID']."' name='remove-item' class='remove-btn'>&#10005;</button></td>";
+                    echo "<td width=13%;><button value='".$product['VARIANTID']."' name='remove-item' class='remove-btn'>&#10005;</button></td>";
                     echo "</tr>";
                 }
                 echo "</form>";

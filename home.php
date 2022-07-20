@@ -28,26 +28,35 @@ At first he only sold vegetables in the markets and as the business grew he beca
         <h1><?php echo $value ?></h1>
         <?php
             echo "<div id='carousel'>";
-            $sql = "SELECT * FROM variants v
-                    JOIN products p
-                    ON v.productID = p.productID
-                    JOIN category c
-                    ON p.categoryID = c.categoryID
-                    WHERE c.categoryName = '".$value."'
-                    GROUP BY v.productID
-                    ORDER BY v.productID
-                    LIMIT 6";
-            $results = mysqli_query($con, $sql);
-            while ($product = mysqli_fetch_array($results)) {
+            $sql = "SELECT * FROM (
+                        SELECT * FROM VARIANTS V
+                        JOIN PRODUCTS P
+                        ON v.productid=p.productid
+                        JOIN CATEGORY C
+                        ON p.categoryid=c.categoryid
+                        WHERE variantid IN
+                        (
+                            SELECT variantID FROM
+                            (
+                                SELECT variantID, row_number() over (partition by productid order by productid desc) rn
+                                FROM VARIANTS
+                            )v
+                            WHERE rn=1
+                        )
+                        AND c.categoryname='".$value."'
+                    ) WHERE rownum <= 6";
+            $results = oci_parse($con, $sql);
+            oci_execute($results);
+            while ($product = oci_fetch_array($results)) {
                 echo '<div class="product">';
                     echo '<div id="prod-img-container">';
-                        echo "<img src='".$product['variantImage']."'>";
+                        echo "<img src='".$product['VARIANTIMAGE']."'>";
                     echo '</div>';
                     echo "<div id='prod-text-container'>";
-                                echo "<p>".$product['productName']."</p>";
-                                echo "<p><b>RM".$product['variantPrice']."</b></p>";
+                                echo "<p>".$product['VARIANTNAME']."</p>";
+                                echo "<p><b>RM".$product['VARIANTPRICE']."</b></p>";
                     echo "</div>";
-                    echo "<form action='product.php?id=".$product['variantID']."' method='post'>";
+                    echo "<form action='product.php?id=".$product['VARIANTID']."' method='post'>";
                         echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
                     echo "</form>";
                 echo '</div>';

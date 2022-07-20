@@ -91,14 +91,16 @@
                     echo (isset($_GET['min']) ? '<input type="hidden" name="min" value="'.$_GET['min'].'">' : "");
                     echo '<input type="radio" id="all" name="category" value="all" '.((isset($_GET["category"]) && $_GET["category"]=="all") ? "checked" : "").'>';
                     echo '<label for="all">All</label><br>';
-                    $filters = mysqli_query($con, "SELECT DISTINCT categoryName FROM category");
-                    while($row = mysqli_fetch_array($filters)) {
-                        echo '<input type="radio" id="'.$row['categoryName'].'" name="category" value="'.$row['categoryName'].'" '.((isset($_GET["category"]) && $_GET["category"]==$row['categoryName']) ? "checked" : "").'>';
-                        echo '<label for="'.$row['categoryName'].'">'.$row['categoryName'].'</label><br>';
-                        $filters2 = mysqli_query($con, "SELECT DISTINCT subCategoryName FROM category WHERE categoryName='".$row['categoryName']."' AND subCategoryName<>''");
-                        while($row2 = mysqli_fetch_array($filters2)) {
-                            echo '<input type="radio" id="'.$row2['subCategoryName'].'" name="category" value="'.$row2['subCategoryName'].'" '.((isset($_GET["category"]) && $_GET["category"]==$row2['subCategoryName']) ? "checked" : "").'>';
-                            echo '<label for="'.$row2['subCategoryName'].'">'.$row2['subCategoryName'].'</label><br>';
+                    $filters = oci_parse($con, "SELECT DISTINCT categoryName FROM category");
+                    oci_execute($filters);
+                    while($row = oci_fetch_array($filters)) {
+                        echo '<input type="radio" id="'.$row['CATEGORYNAME'].'" name="category" value="'.$row['CATEGORYNAME'].'" '.((isset($_GET["category"]) && $_GET["category"]==$row['CATEGORYNAME']) ? "checked" : "").'>';
+                        echo '<label for="'.$row['CATEGORYNAME'].'">'.$row['CATEGORYNAME'].'</label><br>';
+                        $filters2 = oci_parse($con, "SELECT DISTINCT subCategoryName FROM category WHERE categoryName='".$row['CATEGORYNAME']."' AND subCategoryName IS NOT NULL");
+                        oci_execute($filters2);
+                        while($row2 = oci_fetch_array($filters2)) {
+                            echo '<input type="radio" id="'.$row2['SUBCATEGORYNAME'].'" name="category" value="'.$row2['SUBCATEGORYNAME'].'" '.((isset($_GET["category"]) && $_GET["category"]==$row2['SUBCATEGORYNAME']) ? "checked" : "").'>';
+                            echo '<label for="'.$row2['SUBCATEGORYNAME'].'">'.$row2['SUBCATEGORYNAME'].'</label><br>';
                         }
                     }
                 ?>
@@ -119,18 +121,30 @@
             </div>
             <div id="product-list">
                 <?php
-                $query ="SELECT * FROM variants v
-                        JOIN products p
-                        ON v.productID = p.productID
-                        JOIN inventory i
-                        ON v.variantID = i.variantID
-                        JOIN category c
-                        ON p.categoryID = c.categoryID
-                        WHERE i.productInventory='In Stock'";
+                $query ="SELECT * FROM VARIANTS V 
+                JOIN PRODUCTS P 
+                USING (productid) 
+                JOIN CATEGORY C 
+                USING (categoryid) 
+                WHERE variantid IN ( 
+                    SELECT variantID FROM 
+                    ( 
+                        SELECT variantID, row_number() over (partition by productid order by productid asc) rn2 FROM 
+                        ( 
+                            SELECT * FROM VARIANTS v 
+                            JOIN PRODUCTS p 
+                            USING (productid) 
+                            JOIN CATEGORY c
+                            USING (categoryid) 
+                            JOIN INVENTORY i 
+                            USING (variantid) 
+                            WHERE productInventory = 'In Stock' 
+                        )
+                    ) WHERE rn2=1 
+                )";
                 if (isset($_GET['category'])) {
                     switch($_GET['category']) {
                         case 'all':
-                            $query = $query."";
                             break;
                         case 'VEGETABLES':
                         case 'MEAT & POULTRY':
@@ -145,7 +159,14 @@
                 if (isset($_GET['min']) && isset($_GET['max'])) {
                     $query = $query." AND v.variantPrice BETWEEN '".$_GET['min']."' AND '".$_GET['max']."'";
                 }
-                $query = $query." GROUP BY v.productID";
+                //Calculate Number of Pages
+                $result = oci_parse($con, $query);
+                oci_execute($result);
+                $row_count = oci_fetch_all($result, $res);
+                $pages_count = ceil($row_count/9);
+                (isset($_GET['page']) ? $page=$_GET['page'] : $page=1);
+                //Display Products Limit 9
+                $query = $query."))WHERE rn BETWEEN ".(($page<>1) ? (($page-1)*9)+1 : '1')." AND ".(($page<>1) ? ($page*9)-1 : '9').")";
                 if (isset($_GET['sortby'])) {
                     switch($_GET['sortby']) {
                         case 'priceasc':
@@ -160,56 +181,54 @@
                         case 'namedesc':
                             $query = $query." ORDER BY p.productName desc";
                             break;
-                        default:
-                            $query = $query." ORDER BY v.productID";
                     }
-                } else { $query = $query." ORDER BY v.productID"; }
-                //Calculate Number of Pages
-                $result = mysqli_query($con, $query);
-                $row_count = mysqli_num_rows($result);
-                mysqli_free_result($result);
-                $pages_count = ceil($row_count/9);
-                (isset($_GET['page']) ? $page=$_GET['page'] : $page=1);
-                //Display Products Limit 9
-                $query = $query." LIMIT ".(($page<>1) ? ($page-1)*9 : '0').", 9";
-                $results = mysqli_query($con, $query);
-                if(mysqli_num_rows($results)>0) {
-                    while($product = mysqli_fetch_array($results)) {
+                }
+                $query = 'SELECT * FROM VARIANTS V
+                JOIN PRODUCTS P
+                USING (productid)
+                JOIN CATEGORY C
+                USING (categoryid)
+                JOIN INVENTORY I
+                USING (variantid)
+                WHERE variantid IN
+                (
+                    SELECT variantid FROM
+                    (
+                        SELECT variantid, row_number() over (order by variantid asc) rn FROM
+                        ('.$query;
+                $results = oci_parse($con, $query);
+                oci_execute($results);
+                $nrows = oci_fetch_all($results, $res);
+                if($nrows>0) {
+                    for($i=0; $i<$nrows; $i++) {
                         echo "<div class='product'>";
-                            echo "<a href='product.php?id=".$product['variantID']."'>";
+                            echo "<a href='product.php?id=".$res['VARIANTID'][$i]."'>";
                             echo "<div id='img-container'>";
-                                echo "<img src='".$product['variantImage']."'>";
+                                echo "<img src='".$res['VARIANTIMAGE'][$i]."'>";
                                 echo '<div class="overlay">';
                                     echo '<div class="text">Quick View</div>';
                                 echo '</div>';
                             echo "</div>";
                             echo "<div id='text-container'>";
-                                echo "<p>".$product['productName']."</p>";
+                                echo "<p>".$res['PRODUCTNAME'][$i]."</p>";
                                 echo "<hr class='name-price'>";
-                                echo "<p><b>RM".$product['variantPrice']."</b></p>";
+                                echo "<p><b>RM".$res['VARIANTPRICE'][$i]."</b></p>";
                             echo "</div>";
                             echo "</a>";
                             echo "<form action='' method='post'>";
-                            $sql = "SELECT * FROM inventory
-                            WHERE variantID = ".$product['variantID']."
-                            AND productInventory = 'In Stock'";
-                            $stock = mysqli_query($con, $sql);
-                            if(mysqli_num_rows($stock) > 0) {
-                                echo "<select name='id' class='variant-select'>";
-                                $sql = "SELECT * FROM variants v
-                                        JOIN inventory i
-                                        ON v.variantID = i.variantID
-                                        WHERE productID='".$product['productID']."' 
-                                        AND i.productInventory='In Stock'";
-                                $result = mysqli_query($con, $sql);
-                                while($variant = mysqli_fetch_array($result)) {
-                                    echo "<option value='".$variant['variantID']."'>".$variant['variantName']."</option>";
-                                }
-                                echo "</select>";
-                            } else { 
-                                echo "<select style='visibility:hidden;' class='variant-select'></select>";
-                                echo "<input type='hidden' name='id' value='".$product['productID']."'>";
+                            echo "<select name='id' class='variant-select'>";
+                            $sql = "SELECT * FROM variants
+                                    JOIN inventory
+                                    USING (variantid)
+                                    WHERE productID=".$res['PRODUCTID'][$i]." 
+                                    AND productInventory='In Stock'";
+                            $result = oci_parse($con, $sql);
+                            oci_execute($result);
+                            $nrows2 = oci_fetch_all($result, $res2);
+                            for($j=0; $j<$nrows2; $j++) {
+                                echo "<option value='".$res2['VARIANTID'][$j]."'>".$res2['VARIANTNAME'][$j]."</option>";
                             }
+                            echo "</select>";
                             echo "<div id='quantity-wrapper'>";
                                 echo "<input type='button' class='subs' value='&minus;'>";
                                 echo "<input type='number' class='quantity' value='1' min='1' max='99' name='quantity'>";
@@ -242,8 +261,6 @@
                 } else {
                     echo "<p id='no-item'>No items matched your search criteria. Try widening your search.</p>";
                 }
-                // free the result set as you don't need it anymore
-                mysqli_free_result($results);
                 ?>
             </div>
         </div>

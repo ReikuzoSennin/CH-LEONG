@@ -29,7 +29,7 @@ $(document).ready(function () {
         <li id="cart"><a href="cart.php"><i class="fas fa-shopping-bag fa-2x"></i></a></li>
         <?php
         if(isset($_SESSION['user'])) {
-            echo '<li id="login" onclick="myFunction()" class="dropbtn"><i class="fas fa-user-circle"></i><span id="username">&nbsp;'.$_SESSION['user']['username'].'</span>'.' <i class="fas fa-chevron-down fa-sm"></i>';
+            echo '<li id="login" onclick="myFunction()" class="dropbtn"><i class="fas fa-user-circle"></i><span id="username">&nbsp;'.$_SESSION['user']['USERNAME'][0].'</span>'.' <i class="fas fa-chevron-down fa-sm"></i>';
                 echo '<ul id="myDropdown" class="dropdown-content">';
                     echo '<li><a href="profile.php">Account</a></li>';
                     echo '<li><a href="php/logout.php" class="logout">Logout</a></li>';

@@ -20,26 +20,35 @@
                 <input type="search" id="search-box" name="search" value="<?php echo $_GET['search']?>" placeholder="Search">
             </form>
             <?php
-                $sql = "SELECT * FROM variants v
-                        JOIN products p
-                        ON v.productID = p.productID
-                        WHERE p.productName LIKE '%".$_GET['search']."%' 
-                        GROUP BY v.productID";
-                $results = mysqli_query($con, $sql);
+                $sql = "SELECT * FROM variants v 
+                JOIN products p 
+                USING (productid) 
+                WHERE UPPER(p.productName) LIKE UPPER('%".$_GET['search']."%')
+                AND VARIANTID IN
+                (
+                    SELECT VARIANTID FROM
+                    (
+                        SELECT VARIANTID, row_number() over (partition by productid order by productid asc) rn
+                        FROM VARIANTS
+                    )WHERE RN=1
+                )";
+                $results = oci_parse($con, $sql);
+                oci_execute($results);
+                $nrows = oci_fetch_all($results, $res);
             ?>
-            <p><?php echo mysqli_num_rows($results)?> products found for "<?php echo $_GET['search'] ?>"</p>
+            <p><?php echo $nrows?> products found for "<?php echo $_GET['search'] ?>"</p>
             <?php
                 echo "<div id='product-list'>"; 
-                while ($product = mysqli_fetch_array($results)) {
+                for($i=0; $i<$nrows; $i++) {
                     echo '<div class="product">';
                         echo '<div id="img-container">';
-                            echo "<img src='".$product['variantImage']."'>";
+                            echo "<img src='".$res['VARIANTIMAGE'][$i]."'>";
                         echo '</div>';
                         echo "<div id='text-container'>";
-                                    echo "<p>".$product['productName']."</p>";
-                                    echo "<p><b>RM".$product['variantPrice']."</b></p>";
+                                    echo "<p>".$res['PRODUCTNAME'][$i]."</p>";
+                                    echo "<p><b>RM".$res['VARIANTPRICE'][$i]."</b></p>";
                         echo "</div>";
-                        echo "<form action='product.php?id=".$product['variantID']."' method='post'>";
+                        echo "<form action='product.php?id=".$res['VARIANTID'][$i]."' method='post'>";
                             echo "<input type='submit' class='addtocart' value='Add to Cart' name='go-to-product'>";
                         echo "</form>";
                     echo '</div>';

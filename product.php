@@ -25,33 +25,38 @@
                 JOIN products p
                 ON v.productID = p.productID
                 WHERE v.variantID=".$_GET['id']."";
-        $result = mysqli_query($con, $sql);
-        $product = mysqli_fetch_array($result);
+        $result = oci_parse($con, $sql);
+        oci_execute($result);
+        $product = oci_fetch_array($result);
         echo '<div id="img-container">';
-            echo "<img src='".$product['variantImage']."'>";
+            echo "<img src='".$product['VARIANTIMAGE']."'>";
         echo '</div>';
         echo '<div id="text-container">';
             // echo "<p>".(($product['variantName']<>"") ? $product['variantName']:$product['productName'])."</p>";
-            echo "<p>".$product['productName']."</p>";
-            echo "<p>RM".$product['variantPrice']."</p>";
+            echo "<p>".$product['PRODUCTNAME']."</p>";
+            echo "<p>RM".$product['VARIANTPRICE']."</p>";
             $sql = "SELECT * FROM variants
-                    WHERE productID = ".$product['productID']."";
-            $results = mysqli_query($con, $sql);
-            if(mysqli_num_rows($results) > 1) {
+                    WHERE productID = ".$product['PRODUCTID']."";
+            $results = oci_parse($con, $sql);
+            oci_execute($results);
+            $nrows = oci_fetch_all($results, $res);
+            if($nrows > 1) {
             echo "<form action='' method='GET' onChange=submit()>";
                 echo '<label for="type" id="type-label">Type</label><br><br>';
                 echo "<select name='id' id='type'>";
-                while($products = mysqli_fetch_array($results)) {
-                    echo "<option value='".$products['variantID']."' ".((isset($_GET['id']) && $_GET['id']==$products['variantID']) ? 'selected' : '').">".$products['variantName']."</option>";
+                for($i=0; $i<$nrows; $i++) {
+                    echo "<option value='".$res['VARIANTID'][$i]."' ".((isset($_GET['id']) && $_GET['id']==$res['VARIANTID'][$i]) ? 'selected' : '').">".$res['VARIANTNAME'][$i]."</option>";
                 }
                 echo "</select><br>";
             echo "</form>";
             }
             $sql = "SELECT * FROM inventory
-            WHERE variantID = ".$product['variantID']."
+            WHERE variantID = ".$product['VARIANTID']."
             AND productInventory = 'In Stock'";
-            $stock = mysqli_query($con, $sql);
-            if(mysqli_num_rows($stock) > 0) {
+            $stock = oci_parse($con, $sql);
+            oci_execute($stock);
+            $nrows = oci_fetch_all($stock, $res);
+            if($nrows > 0) {
             echo "<form action='' method='POST'>";
                 echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
                 echo '<label for="quantity" id="quantity-label">Quantity</label><br><br>';

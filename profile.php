@@ -26,7 +26,7 @@
                     <label>
                     <input type="file" name="fileToUpload" style="display: none;" onchange="document.getElementById('upload-user').click();">
                     <?php
-                    $file_name = $_SESSION['user']['userID'];
+                    $file_name = $_SESSION['user']['USERID'][0];
                     $destination = "media/users/";
                     $extensions = array('.jpg', '.png', '.jpeg', '.gif');
                     $src = "media/users/default.png";
@@ -38,25 +38,25 @@
                     }
                     echo "<img id='pic' src='".$src."'>";
                     echo "</label>";
-                    echo "<input type='hidden' name='userID' value='".$_SESSION['user']['userID']."'>";
+                    echo "<input type='hidden' name='userID' value='".$_SESSION['user']['USERID'][0]."'>";
                     ?>
                     <input type="submit" style="display: none;" id="upload-user" name="upload-user">
                     </form>
                 </div>
-                <?php echo "<br><p>".(isset($_SESSION['user']) ? $_SESSION['user']['username'] : "")."</p>" ?><br>
+                <?php echo "<br><p>".(isset($_SESSION['user']) ? $_SESSION['user']['USERNAME'][0] : "")."</p>" ?><br>
             </div>
         </div>
         <div id="profile-details">
             <form action="" method="post">
                 <h1>Username</h1>
-                <input type="text" name="username" class="profile-form" placeholder="Username" <?php echo "value='".(isset($_SESSION['user']) ? $_SESSION['user']['username'] : "")."'"?> >
+                <input type="text" name="username" class="profile-form" placeholder="Username" <?php echo "value='".(isset($_SESSION['user']) ? $_SESSION['user']['USERNAME'][0] : "")."'"?> >
                 <?php echo "<br><p id='error'>".(isset($_SESSION['username']) ? $_SESSION['username'] : "")."</p>" ?><br>
                 <input type="hidden" name="rename">
                 <?php unset($_SESSION['username']); ?>
             </form>
             <hr class="solid"><br>
             <h1>Email</h1>
-            <?php echo "<br><p>".(isset($_SESSION['user']) ? $_SESSION['user']['userEmail'] : "")."</p>"?><br>
+            <?php echo "<br><p>".(isset($_SESSION['user']) ? $_SESSION['user']['USEREMAIL'][0] : "")."</p>"?><br>
             <hr class="solid"><br>
             <form action="" method="post">
                 <h1>Password</h1>
