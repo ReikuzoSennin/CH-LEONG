@@ -49,11 +49,13 @@ if (isset($_POST['register'])) {
         if($nrows == 0)  {
             $username = strstr($email, '@', true);
             $password = md5($password);//encrypt the password before saving in the database
-            $result = oci_parse($con, "INSERT INTO users (username, userPass, userEmail) VALUES('$username', '$password', '$email')");
+            $sql = "INSERT INTO users (username, userPass, userEmail) VALUES('$username', '$password', '$email')";
+            $result = oci_parse($con, $sql);
             oci_execute($result);
 
             // get id of the created user
-		    $results = oci_parse($con, "SELECT * FROM users WHERE userEmail='$email' AND userPass='$password'");
+            $sql = "SELECT * FROM users WHERE userEmail='$email' AND userPass='$password'";
+		    $results = oci_parse($con, $sql);
             oci_execute($results);
             $nrows = oci_fetch_all($results, $res);
             $logged_in_user = $res;
@@ -62,7 +64,9 @@ if (isset($_POST['register'])) {
             $_SESSION['success']  = "You are now logged in";
 
 			//Each user gets a cart
-			oci_parse($con, "INSERT INTO cart (userID) VALUES('".$_SESSION['user']['USERID'][0]."')");
+            $sql = "INSERT INTO cart (userID) VALUES('".$_SESSION['user']['USERID'][0]."')";
+			$results = oci_parse($con, $sql);
+            oci_execute($results);
             header('location: index.php');	
         } else {
             array_push($errors, "Email already registered!");
@@ -147,8 +151,9 @@ if (isset($_POST['pass-change'])) {
 
 	if(count($errors) == 0) {
 		$password = md5($password1);
-		$result = oci_parse($con, "UPDATE users SET userPass='$password' WHERE userID='".$_SESSION['user']['USERID'][0]."'");
-		oci_execute($result);
+        $sql = "UPDATE users SET userPass='$password' WHERE userID=".$_SESSION['user']['USERID'][0];
+		$result = oci_parse($con, $sql);
+        oci_execute($result);
         $_SESSION['user']['USERPASS'][0] = $password;
 	}
 }
@@ -166,7 +171,8 @@ if (isset($_POST['add-to-cart'])) {
 		if (empty($quantity)) {array_push($errors, "Quantity is invalid");}
 
 		if(count($errors) == 0) {
-			$results = oci_parse($con, "SELECT * FROM cart WHERE userID='".$_SESSION['user']['USERID'][0]."'");
+            $sql = "SELECT * FROM cart WHERE userID=".$_SESSION['user']['USERID'][0];
+			$results = oci_parse($con, $sql);
 			// if (oci_num_rows($results) == 0) {
 			// 	oci_parse($con, "INSERT INTO cart (userID) VALUES('".$_SESSION['user']['userID']."')");
 			// 	$results = oci_parse($con, "SELECT * FROM cart WHERE userID='".$_SESSION['user']['userID']."' LIMIT 1");
@@ -175,16 +181,19 @@ if (isset($_POST['add-to-cart'])) {
 			$cart = oci_fetch_array($results);
 
             //if item exist already in cart
-			$result = oci_parse($con, "SELECT * FROM cart_items WHERE variantID='$id' AND cartID='".$cart['CARTID'][0]."'");
+            $sql = "SELECT * FROM cart_items WHERE variantID=$id AND cartID=".$cart['CARTID'][0];
+			$result = oci_parse($con, $sql);
 			oci_execute($result);
             $nrows = oci_fetch_all($result, $res);
             if ($nrows == 1) {
 				$quantity += $res['QUANTITY'][0];
                 //if yes update
-				$results = oci_parse($con, "UPDATE cart_items SET quantity='$quantity' WHERE variantID='$id' AND cartID='".$cart['CARTID'][0]."'");
+                $sql = "UPDATE cart_items SET quantity='$quantity' WHERE variantID='$id' AND cartID=".$cart['CARTID'][0];
+                $results = oci_parse($con, $sql);
                 oci_execute($results);
             } else {//if not insert
-				$results = oci_parse($con, "INSERT INTO cart_items (cartID, variantID, quantity) VALUES('".$cart['CARTID'][0]."', '$id', '$quantity')");
+                $sql = "INSERT INTO cart_items (cartID, variantID, quantity) VALUES('".$cart['CARTID'][0]."', '$id', '$quantity')";
+				$results = oci_parse($con, $sql);
                 oci_execute($results);
             }
 		}
@@ -583,7 +592,7 @@ if(isset($_POST['searchquery'])) {
                     ) WHERE rn2=1
                 )
             )
-        )WHERE rn BETWEEN ".(($currentpage<>1) ? (($currentpage-1)*20)+1 : '1')." AND ".(($currentpage<>1) ? ($currentpage*20)-1 : '20').")";
+        )WHERE rn BETWEEN ".(($currentpage<>1) ? (($currentpage-1)*20)+1 : '1')." AND ".(($currentpage<>1) ? ($currentpage*20)-1 : '20').") ORDER BY VARIANTID ASC";
     $results = oci_parse($con, $sql);
     oci_execute($results);
     echo "<form method='post' id='pagination'>";
@@ -636,6 +645,7 @@ if(isset($_POST['submitProduct'])) {
     $id_array = $_POST['variant-id'];
     $variant_array = $_POST['variant-name'];
     $price_array = $_POST['variant-price'];
+    $inventory_array = $_POST['variant-inventory'];
 
     if($id!="") {//IF EXISTING PRODUCT
         $sql = "SELECT * FROM products WHERE productID=".$id;
@@ -710,7 +720,100 @@ if(isset($_POST['submitProduct'])) {
         foreach($id_array as $i => $variantId) {
             foreach($variant_array as $i2 => $variantName) {
                 foreach($price_array as $i3 => $price) {
-                    if($i===$i2 && $i2===$i3) {
+                    foreach($inventory_array as $i4 => $inventory) {
+                        if($i===$i2 && $i2===$i3 && $i3==$i4) {
+                            // if ($price<1) {array_push($errors, "Invalid Price");}
+                            if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
+                                // Notice how to grab MIME type.
+                                $mime_type = mime_content_type($_FILES['variant-image']['tmp_name'][$i]);
+                                // If you want to allow certain files
+                                $allowed_file_types = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+                                if (! in_array($mime_type, $allowed_file_types)) {
+                                    // File type is NOT allowed.
+                                    echo '<script>alert("Sorry, only JPG, JPEG, PNG & GIF files are allowed.")</script>';
+                                    $uploadOk = 0;
+                                }
+                                // Check file size
+                                if ($_FILES["variant-image"]["size"][$i] > 500000) {
+                                    // File size is NOT allowed.
+                                    echo '<script>alert("Sorry, your file is too large.")</script>';
+                                    $uploadOk = 0;
+                                }
+                                if (file_exists("media/Site Files/".$_FILES['variant-image']['name'][$i])) {
+                                    echo '<script>alert("Sorry, your file name already exist.")</script>';
+                                    $uploadOk = 0;
+                                }
+                            }
+                            if ($uploadOk == 1) {
+                                //if default, don't upload
+                                if($_FILES['variant-image']['tmp_name'][$i]=="") {
+                                    $_FILES['variant-image']['name'][$i]="default.jpg";
+                                    $_FILES['variant-image']['type'][$i]="image/jpg";
+                                }
+                                $newFilePath = "media/Site Files/" . $_FILES['variant-image']['name'][$i];
+                                //if new image, upload
+                                if($_FILES['variant-image']['tmp_name'][$i]!=="") {
+                                    move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
+                                }
+                                
+                                if($variantId!="") {//IF EXISTING VARIANT
+                                    $sql = "SELECT * FROM variants WHERE variantID=".$variantId." AND productID=".$id;
+                                    $result = oci_parse($con, $sql);
+                                    oci_execute($result);
+                                    $variant = oci_fetch_array($result);
+
+                                    if($newFilePath==="media/Site Files/default.jpg"){//IF OLD IMAGE
+                                        $sql = "UPDATE variants SET
+                                        variantName='".$variantName."',
+                                        variantPrice=".$price."
+                                        WHERE variantID=".$variant['VARIANTID'];
+                                        $result = oci_parse($con, $sql);
+                                        oci_execute($result);
+                                    }
+                                    else {//IF NEW IMAGE
+                                        $sql = "UPDATE variants SET
+                                                variantName='".$variantName."',
+                                                variantPrice=".$price.",
+                                                variantImage='".$newFilePath."'
+                                                WHERE variantID=".$variant['VARIANTID'];
+                                        $result = oci_parse($con, $sql);
+                                        oci_execute($result);
+                                    }
+                                    $sql = "UPDATE inventory SET
+                                        productInventory='".$inventory."'
+                                        WHERE variantID=".$variant['VARIANTID'];
+                                    $result = oci_parse($con, $sql);
+                                    oci_execute($result);
+                                } else { //IF NEW VARIANT
+                                    $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
+                                            VALUES('$variantName', '$price', '$newFilePath', '".$product['PRODUCTID']."')";
+                                    $result = oci_parse($con, $sql);
+                                    oci_execute($result);
+
+                                    $sql = "SELECT * FROM variants
+                                            WHERE variantName='".$variantName."'
+                                            AND productID='".$product['PRODUCTID']."'";
+                                    $result = oci_parse($con, $sql);
+                                    oci_execute($result);
+                                    $variant = oci_fetch_array($result);
+
+                                    $sql = "INSERT INTO inventory (variantID, productInventory)
+                                            VALUES('".$variant['VARIANTID']."', '".$inventory."')";
+                                    $result = oci_parse($con, $sql);
+                                    oci_execute($result);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        //IF NEW PRODUCT
+        foreach($variant_array as $i => $variantName) {
+            foreach($price_array as $i2 => $price) {
+                foreach($inventory_array as $i3 => $inventory) {
+                    if($i===$i2 && $i2==$i3) {
                         // if ($price<1) {array_push($errors, "Invalid Price");}
                         if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
                             // Notice how to grab MIME type.
@@ -744,107 +847,23 @@ if(isset($_POST['submitProduct'])) {
                             if($_FILES['variant-image']['tmp_name'][$i]!=="") {
                                 move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
                             }
-                            
-                            if($variantId!="") {//IF EXISTING VARIANT
-                                $sql = "SELECT * FROM variants WHERE variantID=".$variantId." AND productID=".$id;
-                                $result = oci_parse($con, $sql);
-                                oci_execute($result);
-                                $variant = oci_fetch_array($result);
+                            $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
+                                    VALUES('$variantName', '$price', '$newFilePath', '".$product['PRODUCTID']."')";
+                            $result = oci_parse($con, $sql);
+                            oci_execute($result);
 
-                                if($newFilePath==="media/Site Files/default.jpg"){//IF OLD IMAGE
-                                    $sql = "UPDATE variants SET
-                                    variantName='".$variantName."',
-                                    variantPrice=".$price."
-                                    WHERE variantID=".$variant['VARIANTID'];
-                                    $result = oci_parse($con, $sql);
-                                    oci_execute($result);
-                                }
-                                else {//IF NEW IMAGE
-                                    $sql = "UPDATE variants SET
-                                            variantName='".$variantName."',
-                                            variantPrice=".$price.",
-                                            variantImage='".$newFilePath."'
-                                            WHERE variantID=".$variant['VARIANTID'];
-                                    $result = oci_parse($con, $sql);
-                                    oci_execute($result);
-                                }
-                            } else { //IF NEW VARIANT
-                                $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
-                                        VALUES('$variantName', '$price', '$newFilePath', '".$product['PRODUCTID']."')";
-                                $result = oci_parse($con, $sql);
-                                oci_execute($result);
+                            $sql = "SELECT * FROM variants
+                                    WHERE variantName='".$variantName."'
+                                    AND productID='".$product['PRODUCTID']."'";
+                            $result = oci_parse($con, $sql);
+                            oci_execute($result);
+                            $variant = oci_fetch_array($result);
 
-                                $sql = "SELECT * FROM variants
-                                        WHERE variantName='".$variantName."'
-                                        AND productID='".$product['PRODUCTID']."'";
-                                $result = oci_parse($con, $sql);
-                                oci_execute($result);
-                                $variant = oci_fetch_array($result);
-
-                                $sql = "INSERT INTO inventory (variantID)
-                                        VALUES('".$variant['VARIANTID']."')";
-                                $result = oci_parse($con, $sql);
-                                oci_execute($result);
-                            }
+                            $sql = "INSERT INTO inventory (variantID, productInventory)
+                                    VALUES('".$variant['VARIANTID']."', '".$inventory."')";
+                            $result = oci_parse($con, $sql);
+                            oci_execute($result);
                         }
-                    }
-                }
-            }
-        }
-    } else {
-        //IF NEW PRODUCT
-        foreach($variant_array as $i => $variantName) {
-            foreach($price_array as $i2 => $price) {
-                if($i===$i2) {
-                    // if ($price<1) {array_push($errors, "Invalid Price");}
-                    if (is_uploaded_file($_FILES['variant-image']['tmp_name'][$i])) {
-                        // Notice how to grab MIME type.
-                        $mime_type = mime_content_type($_FILES['variant-image']['tmp_name'][$i]);
-                        // If you want to allow certain files
-                        $allowed_file_types = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-                        if (! in_array($mime_type, $allowed_file_types)) {
-                            // File type is NOT allowed.
-                            echo '<script>alert("Sorry, only JPG, JPEG, PNG & GIF files are allowed.")</script>';
-                            $uploadOk = 0;
-                        }
-                        // Check file size
-                        if ($_FILES["variant-image"]["size"][$i] > 500000) {
-                            // File size is NOT allowed.
-                            echo '<script>alert("Sorry, your file is too large.")</script>';
-                            $uploadOk = 0;
-                        }
-                        if (file_exists("media/Site Files/".$_FILES['variant-image']['name'][$i])) {
-                            echo '<script>alert("Sorry, your file name already exist.")</script>';
-                            $uploadOk = 0;
-                        }
-                    }
-                    if ($uploadOk == 1) {
-                        //if default, don't upload
-                        if($_FILES['variant-image']['tmp_name'][$i]=="") {
-                            $_FILES['variant-image']['name'][$i]="default.jpg";
-                            $_FILES['variant-image']['type'][$i]="image/jpg";
-                        }
-                        $newFilePath = "media/Site Files/" . $_FILES['variant-image']['name'][$i];
-                        //if new image, upload
-                        if($_FILES['variant-image']['tmp_name'][$i]!=="") {
-                            move_uploaded_file($_FILES['variant-image']['tmp_name'][$i], $newFilePath);
-                        }
-                        $sql = "INSERT INTO variants (variantName, variantPrice, variantImage, productID)
-                                VALUES('$variantName', '$price', '$newFilePath', '".$product['PRODUCTID']."')";
-                        $result = oci_parse($con, $sql);
-                        oci_execute($result);
-
-                        $sql = "SELECT * FROM variants
-                                WHERE variantName='".$variantName."'
-                                AND productID='".$product['PRODUCTID']."'";
-                        $result = oci_parse($con, $sql);
-                        oci_execute($result);
-                        $variant = oci_fetch_array($result);
-
-                        $sql = "INSERT INTO inventory (variantID)
-                                VALUES('".$variant['VARIANTID']."')";
-                        $result = oci_parse($con, $sql);
-                        oci_execute($result);
                     }
                 }
             }
@@ -877,7 +896,14 @@ if(isset($_POST['editProduct'])) {
     $results = oci_parse($con, $sql2);
     oci_execute($results);
     while($variants = oci_fetch_assoc($results)) {
+        $sql = "SELECT * FROM inventory WHERE variantID=".$variants['VARIANTID'];
+        $result = oci_parse($con, $sql);
+        oci_execute($result);
+        $inventory = oci_fetch_assoc($result);
+        $inventory = array_values($inventory);
         $variants = array_values($variants);
+        array_push($variants, $inventory);
+
         array_push($product, $variants);
     }
     echo json_encode($product);
